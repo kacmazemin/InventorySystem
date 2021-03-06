@@ -13,5 +13,53 @@ UCLASS()
 class INVENTORYSYSTEM_API UBasicItemDataAsset : public UDataAsset
 {
 	GENERATED_BODY()
+
+public:
+
+	UFUNCTION(BlueprintCallable)
+	const FString& GetItemName() const
+	{
+		return ItemName;
+	};
+
+	UFUNCTION(BlueprintCallable)
+	const FString& GetDescription() const
+	{
+		return Description;
+	};
+
+	UFUNCTION(BlueprintCallable)
+    UTexture2D* GetThumbnail() const
+	{
+		return ItemIcon;
+	};
+
+	UFUNCTION(BlueprintCallable)
+    UMeshComponent* GetMeshComponent() const
+	{
+		return ItemMesh;	
+	};
+
+	UFUNCTION(BlueprintCallable)
+	FIntPoint GetItemSize() const
+	{
+		return ItemSize;	
+	};
+
+private:
 	
+	UPROPERTY(EditAnywhere)
+	FString ItemName;
+
+	UPROPERTY(EditAnywhere)
+	FString Description;
+
+	UPROPERTY(EditAnywhere)
+	UTexture2D* ItemIcon;
+
+	UPROPERTY(EditAnywhere)
+	UMeshComponent* ItemMesh;
+
+	UPROPERTY(EditAnywhere, meta = (ClampMin = "1", ClampMax = "3", UIMin = "1", UIMax = "3"))
+	FIntPoint ItemSize = {1,1};
 };
