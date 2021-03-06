@@ -13,5 +13,9 @@ UCLASS()
 class INVENTORYSYSTEM_API UInventoryWidget : public UUserWidget
 {
 	GENERATED_BODY()
+
+protected:
+	
+	virtual void NativeConstruct() override;
 	
 };
