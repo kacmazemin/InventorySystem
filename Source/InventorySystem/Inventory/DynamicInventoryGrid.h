@@ -7,6 +7,7 @@
 #include "DynamicInventoryGrid.generated.h"
 
 class UGridPanel;
+class UBorder;
 /**
  * 
  */
@@ -26,6 +27,9 @@ public:
 protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	UGridPanel* InventoryGridPanel = nullptr;
+
+	UPROPERTY(meta = (BindWidget))
+	UBorder* GridPanelBorder = nullptr;
 	
 private:
 	virtual void NativeConstruct() override;

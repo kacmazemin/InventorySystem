@@ -18,7 +18,7 @@ void UDynamicInventoryGrid::NativeConstruct()
 
 void UDynamicInventoryGrid::InitInventoryWidget() 
 {
-	if(UCanvasPanelSlot* CanvasPanelSlot = Cast<UCanvasPanelSlot>(InventoryGridPanel->Slot))
+	if(UCanvasPanelSlot* CanvasPanelSlot = Cast<UCanvasPanelSlot>(GridPanelBorder->Slot))
 	{
 		//Y is column count. column * tileSize calculate X size of PanelSlot.
 		CanvasPanelSlot->SetSize({TileSize * InventoryDimension.Y, TileSize * InventoryDimension.X});
