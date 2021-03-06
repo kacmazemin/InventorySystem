@@ -18,10 +18,10 @@ class INVENTORYSYSTEM_API UDynamicInventoryGrid : public UUserWidget
 
 	
 public:
-	UPROPERTY(EditDefaultsOnly, Category="Settings",  meta = (ClampMin = "0", ClampMax = "50", UIMin = "0", UIMax = "50", ExpseOnSpawn = true))
+	UPROPERTY(EditInstanceOnly, Category="Settings",  meta = (ClampMin = "0", ClampMax = "50", UIMin = "0", UIMax = "50", ExpseOnSpawn = true))
 	FIntPoint InventoryDimension = {10, 10};
 
-	UPROPERTY(EditDefaultsOnly, Category="Settings",  meta = (ClampMin = "0", ClampMax = "50", UIMin = "0", UIMax = "50", ExpseOnSpawn = true))
+	UPROPERTY(EditInstanceOnly, Category="Settings",  meta = (ClampMin = "0", ClampMax = "50", UIMin = "0", UIMax = "50", ExpseOnSpawn = true))
 	float TileSize = 25.f;
 
 protected:
