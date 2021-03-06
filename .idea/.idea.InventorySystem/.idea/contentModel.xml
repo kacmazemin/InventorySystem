@@ -43498,6 +43498,7 @@
     <e p="C:\Users\emin\AppData\Local\JetBrains\Rider2020.3\extResources" t="IncludeRecursive" />
     <e p="C:\Users\emin\AppData\Local\JetBrains\Rider2020.3\resharper-host\Local\Transient\Rider\v203\SolutionCaches\_InventorySystem.-1059143761.00" t="ExcludeRecursive" />
     <e p="E:\ue4Projects\InventorySystem" t="IncludeFlat">
+      <e p=".gitignore" t="Include" />
       <e p="Config" t="Include">
         <e p="DefaultEditor.ini" t="Include" />
         <e p="DefaultEngine.ini" t="Include" />
@@ -43512,9 +43513,18 @@
       </e>
       <e p="InventorySystem.sln" t="IncludeFlat" />
       <e p="InventorySystem.uproject" t="Include" />
+      <e p="LICENSE" t="Include" />
       <e p="packages" t="ExcludeRecursive" />
       <e p="Source" t="Include">
         <e p="InventorySystem" t="Include">
+          <e p="BaseCharacter.cpp" t="Include" />
+          <e p="BaseCharacter.h" t="Include" />
+          <e p="Inventory" t="Include">
+            <e p="DynamicInventoryGrid.cpp" t="Include" />
+            <e p="DynamicInventoryGrid.h" t="Include" />
+            <e p="InventoryWidget.cpp" t="Include" />
+            <e p="InventoryWidget.h" t="Include" />
+          </e>
           <e p="InventorySystem.Build.cs" t="Include" />
           <e p="InventorySystem.cpp" t="Include" />
           <e p="InventorySystem.h" t="Include" />
