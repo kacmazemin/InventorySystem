@@ -44,7 +44,7 @@ void UDynamicInventoryGrid::InitInventoryWidget()
 			}
 			UBorder* Border = WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
 			
-			Border->SetBrushColor(FLinearColor::Green);
+			Border->SetBrushColor({0.1, 0.1, 0.1, 0.4});
 				
 			UPanelSlot* PanelSlot = InventoryGridPanel->AddChild(Border);
 
