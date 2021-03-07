@@ -8,6 +8,9 @@
 
 class UGridPanel;
 class UBorder;
+class UBasicItemDataAsset;
+class UInventoryItemDisplay;
+class UGridSlot;
 /**
  * 
  */
@@ -24,15 +27,25 @@ public:
 	UPROPERTY(EditInstanceOnly, Category="Settings",  meta = (ClampMin = "0", ClampMax = "50", UIMin = "0", UIMax = "50", ExpseOnSpawn = true))
 	float TileSize = 25.f;
 
+	UFUNCTION(BlueprintCallable)
+	void AddItem(const UBasicItemDataAsset* ItemDataAsset, const int slotNo);
+
 protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	UGridPanel* InventoryGridPanel = nullptr;
 
 	UPROPERTY(meta = (BindWidget))
 	UBorder* GridPanelBorder = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = "ClassSetting")
+	TSubclassOf<UInventoryItemDisplay> ItemDisplayClass;
+
 	
 private:
-	virtual void NativeConstruct() override;
+	virtual void NativePreConstruct() override;
 	
 	void InitInventoryWidget();
+
+	TArray<UInventoryItemDisplay*> ItemContainer;
+	TArray<std::pair<UBorder*, FIntPoint>> Slots;
 };
