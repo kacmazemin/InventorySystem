@@ -22,13 +22,19 @@ class INVENTORYSYSTEM_API UDynamicInventoryGrid : public UUserWidget
 	
 public:
 	UPROPERTY(EditInstanceOnly, Category="Settings",  meta = (ClampMin = "0", ClampMax = "50", UIMin = "0", UIMax = "50", ExpseOnSpawn = true))
-	FIntPoint InventoryDimension = {10, 10};
+	float ColumnCount = 10;
+
+	UPROPERTY(EditInstanceOnly, Category="Settings",  meta = (ClampMin = "0", ClampMax = "50", UIMin = "0", UIMax = "50", ExpseOnSpawn = true))
+	float RowCount = 10;
 
 	UPROPERTY(EditInstanceOnly, Category="Settings",  meta = (ClampMin = "0", ClampMax = "50", UIMin = "0", UIMax = "50", ExpseOnSpawn = true))
 	float TileSize = 25.f;
 
 	UFUNCTION(BlueprintCallable)
-	void AddItem(const UBasicItemDataAsset* ItemDataAsset, const int slotNo);
+	void AddItem(const UBasicItemDataAsset* ItemDataAsset);
+
+	UFUNCTION(BlueprintCallable)
+	bool IsItemAvailableForSlot(const FIntPoint EmptySlotPoint, const FIntPoint ItemSize);
 
 protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
@@ -39,13 +45,14 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "ClassSetting")
 	TSubclassOf<UInventoryItemDisplay> ItemDisplayClass;
-
 	
 private:
 	virtual void NativePreConstruct() override;
 	
 	void InitInventoryWidget();
+	int GetFirstAvailableSlotIndex() const;
 
 	TArray<UInventoryItemDisplay*> ItemContainer;
-	TArray<std::pair<UBorder*, FIntPoint>> Slots;
+	TArray<UBorder*> Slots;
+	TMap<UBorder*, bool> SlotMap;
 };
