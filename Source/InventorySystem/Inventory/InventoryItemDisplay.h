@@ -4,10 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+
 #include "InventoryItemDisplay.generated.h"
 
 class UBasicItemDataAsset;
 class UImage;
+class UBorder;
 /**
  * 
  */
@@ -18,6 +20,8 @@ class INVENTORYSYSTEM_API UInventoryItemDisplay : public UUserWidget
 
 public:
 	void Init(const UBasicItemDataAsset* BasicItemData);
+
+	FIntPoint GetItemSize() const;
 	
 protected:
 	UPROPERTY(BlueprintReadOnly)
@@ -27,7 +31,16 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UImage* ItemIcon = nullptr;
+
+	UPROPERTY(meta = (BindWidget))
+	UBorder* SlotBorder = nullptr;
+
+	FLinearColor BorderInitialColor;
 	
 	virtual void NativeConstruct() override;
+
+	virtual void NativeOnMouseEnter( const FGeometry& InGeometry, const FPointerEvent& InMouseEvent ) override;
+	virtual void NativeOnMouseLeave( const FPointerEvent& InMouseEvent ) override;
+
 
 };
