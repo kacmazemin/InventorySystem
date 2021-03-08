@@ -14,34 +14,37 @@
 
 void UDynamicInventoryGrid::AddItem(const UBasicItemDataAsset* ItemDataAsset)
 {
-	UInventoryItemDisplay* InventoryItemDisplay = CreateWidget<UInventoryItemDisplay>(this, ItemDisplayClass);
-	InventoryItemDisplay->Init(ItemDataAsset);
-
 	const int Index = GetFirstAvailableSlotIndex(ItemDataAsset->GetItemSize());
-	const FIntPoint ItemStartPoint = GetCoordinateByIndex(Index);
 	
-	Slots[Index]->AddChild(InventoryItemDisplay);
-	ItemContainer.Add(InventoryItemDisplay);
+	if(Index != -1)
+	{
+		UInventoryItemDisplay* InventoryItemDisplay = CreateWidget<UInventoryItemDisplay>(this, ItemDisplayClass);
+		InventoryItemDisplay->Init(ItemDataAsset);
+		const FIntPoint ItemStartPoint = GetCoordinateByIndex(Index);
+	
+		Slots[Index]->AddChild(InventoryItemDisplay);
+		ItemContainer.Add(InventoryItemDisplay);
 
-	const int ItemColumnSize = ItemDataAsset->GetItemSize().Y;
-	const int ItemRowSize = ItemDataAsset->GetItemSize().X;
+		const int ItemColumnSize = ItemDataAsset->GetItemSize().Y;
+		const int ItemRowSize = ItemDataAsset->GetItemSize().X;
 	
-	for (int i = 0; i < ItemRowSize ; i++)
-	{
-		for (int j = 0; j < ItemColumnSize; j++)
+		for (int i = 0; i < ItemRowSize ; i++)
 		{
-			SlotMap.Add(Slots[GetSlotIndexByCoordinate((ItemStartPoint.X + i) % ColumnCount, (ItemStartPoint.Y + j) % RowCount)], true);					
+			for (int j = 0; j < ItemColumnSize; j++)
+			{
+				SlotMap.Add(Slots[GetSlotIndexByCoordinate((ItemStartPoint.X + i) % ColumnCount, (ItemStartPoint.Y + j) % RowCount)], true);					
+			}
 		}
-	}
 	
-	if(Slots[Index])
-	{
-		UPanelSlot* PanelSlot = Cast<UPanelSlot>(Slots[Index]);
-	
-		if(UGridSlot* GridSlot = Cast<UGridSlot>(PanelSlot))
+		if(Slots[Index])
 		{
-			GridSlot->SetColumnSpan(ItemDataAsset->GetItemSize().Y);
-			GridSlot->SetRowSpan(ItemDataAsset->GetItemSize().X);
+			UPanelSlot* PanelSlot = Cast<UPanelSlot>(Slots[Index]);
+	
+			if(UGridSlot* GridSlot = Cast<UGridSlot>(PanelSlot))
+			{
+				GridSlot->SetColumnSpan(ItemDataAsset->GetItemSize().Y);
+				GridSlot->SetRowSpan(ItemDataAsset->GetItemSize().X);
+			}
 		}
 	}
 }
