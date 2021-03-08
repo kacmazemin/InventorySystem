@@ -22,10 +22,10 @@ class INVENTORYSYSTEM_API UDynamicInventoryGrid : public UUserWidget
 	
 public:
 	UPROPERTY(EditInstanceOnly, Category="Settings",  meta = (ClampMin = "0", ClampMax = "50", UIMin = "0", UIMax = "50", ExpseOnSpawn = true))
-	float ColumnCount = 10;
+	int ColumnCount = 10;
 
 	UPROPERTY(EditInstanceOnly, Category="Settings",  meta = (ClampMin = "0", ClampMax = "50", UIMin = "0", UIMax = "50", ExpseOnSpawn = true))
-	float RowCount = 10;
+	int RowCount = 10;
 
 	UPROPERTY(EditInstanceOnly, Category="Settings",  meta = (ClampMin = "0", ClampMax = "50", UIMin = "0", UIMax = "50", ExpseOnSpawn = true))
 	float TileSize = 25.f;
