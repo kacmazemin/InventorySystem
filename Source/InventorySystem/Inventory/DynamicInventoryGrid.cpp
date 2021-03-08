@@ -9,21 +9,34 @@
 #include "Components/GridPanel.h"
 #include "Components/GridSlot.h"
 #include "InventoryItemDisplay.h"
-#include "Components/BorderSlot.h"
 #include "Components/Image.h"
 #include "InventorySystem/Item/BasicItemDataAsset.h"
 
-void UDynamicInventoryGrid::AddItem(const UBasicItemDataAsset* ItemDataAsset, const int slotNo)
+void UDynamicInventoryGrid::AddItem(const UBasicItemDataAsset* ItemDataAsset)
 {
 	UInventoryItemDisplay* InventoryItemDisplay = CreateWidget<UInventoryItemDisplay>(this, ItemDisplayClass);
 	InventoryItemDisplay->Init(ItemDataAsset);
 
-	Slots[slotNo].first->AddChild(InventoryItemDisplay);
+	const int Index = GetFirstAvailableSlotIndex(ItemDataAsset->GetItemSize());
+	const FIntPoint ItemStartPoint = GetCoordinateByIndex(Index);
+	
+	Slots[Index]->AddChild(InventoryItemDisplay);
 	ItemContainer.Add(InventoryItemDisplay);
 
-	if(Slots[slotNo].first)
+	const int ItemColumnSize = ItemDataAsset->GetItemSize().Y;
+	const int ItemRowSize = ItemDataAsset->GetItemSize().X;
+	
+	for (int i = 0; i < ItemRowSize ; i++)
 	{
-		UPanelSlot* PanelSlot = Cast<UPanelSlot>(Slots[slotNo].first);
+		for (int j = 0; j < ItemColumnSize; j++)
+		{
+			SlotMap.Add(Slots[GetSlotIndexByCoordinate((ItemStartPoint.X + i) % ColumnCount, (ItemStartPoint.Y + j) % RowCount)], true);					
+		}
+	}
+	
+	if(Slots[Index])
+	{
+		UPanelSlot* PanelSlot = Cast<UPanelSlot>(Slots[Index]);
 	
 		if(UGridSlot* GridSlot = Cast<UGridSlot>(PanelSlot))
 		{
@@ -31,7 +44,6 @@ void UDynamicInventoryGrid::AddItem(const UBasicItemDataAsset* ItemDataAsset, co
 			GridSlot->SetRowSpan(ItemDataAsset->GetItemSize().X);
 		}
 	}
-
 }
 
 void UDynamicInventoryGrid::NativePreConstruct()
@@ -48,11 +60,11 @@ void UDynamicInventoryGrid::InitInventoryWidget()
 	
 	if(UCanvasPanelSlot* CanvasPanelSlot = Cast<UCanvasPanelSlot>(GridPanelBorder->Slot))
 	{
-		//Y is column count. column * tileSize calculate X size of PanelSlot.
-		CanvasPanelSlot->SetSize({TileSize * InventoryDimension.Y, TileSize * InventoryDimension.X});
+
+		CanvasPanelSlot->SetSize({TileSize * ColumnCount, TileSize * RowCount});
 	}
 
-	for (int Row = 0; Row < InventoryDimension.X; Row++)
+	for (int Row = 0; Row < RowCount; Row++)
 	{
 		if(InventoryGridPanel)
 		{
@@ -60,7 +72,7 @@ void UDynamicInventoryGrid::InitInventoryWidget()
 			InventoryGridPanel->SetRowFill(Row, 1.f);
 		}
 		
-		for (int Column = 0; Column < InventoryDimension.Y; Column++)
+		for (int Column = 0; Column < ColumnCount; Column++)
 		{
 			if(Row == 0)
 			{
@@ -88,7 +100,77 @@ void UDynamicInventoryGrid::InitInventoryWidget()
 				GridSlot->SetPadding(FMargin{1.f,1.f,1.f,1.f});
 			}
 			
-			Slots.Add(std::make_pair(Border, FIntPoint{Row,Column}));
+			Slots.Add(Border);
+			SlotMap.Add(Border, false);
 		}
 	}
+}
+
+int UDynamicInventoryGrid::GetFirstAvailableSlotIndex(const FIntPoint& ItemSize) const
+{
+	int i = 0;
+	for (const auto& SingleSlot : SlotMap)
+	{
+		if(IsItemAvailableForSlot(i,ItemSize))
+		{
+			return i;
+		}
+		
+		i++;
+	}
+	
+	return -1;
+}
+
+FIntPoint UDynamicInventoryGrid::GetCoordinateByIndex(const int Index) const
+{
+	if(Index >= 0 && Index < Slots.Num())
+	{
+		if(UBorder* Border = Cast<UBorder>(Slots[Index]))
+		{
+			if(UGridSlot* GridSlot = Cast<UGridSlot>(Border->Slot))
+			{
+				return FIntPoint{GridSlot->Column, GridSlot->Row};
+			}	
+		}
+	}
+
+	return FIntPoint{-1,-1};
+}
+
+int UDynamicInventoryGrid::GetSlotIndexByCoordinate(const int Column, const int Row) const
+{
+	if(Column > ColumnCount || Row > RowCount )
+	{
+		return -1;
+	}
+	
+	return (Column + (Row * RowCount));
+}
+
+bool UDynamicInventoryGrid::IsItemAvailableForSlot(const int Index, const FIntPoint& ItemSize) const
+{
+	const auto Coordinate = GetCoordinateByIndex(Index);
+
+	const int ItemColumnSize = ItemSize.Y;
+	const int ItemRowSize = ItemSize.X;
+
+	//check neighbours
+	for (int i = 0; i < ItemRowSize ; i++)
+	{
+		for (int j = 0; j < ItemColumnSize; j++)
+		{
+			if(SlotMap[Slots[GetSlotIndexByCoordinate((Coordinate.X + i) , (Coordinate.Y + j))]])
+			{
+				return false;
+			}
+		}
+	}
+	
+	if((Coordinate.X + ItemSize.X  > RowCount) || (Coordinate.Y + ItemSize.Y  > ColumnCount))
+	{
+		return false;
+	}
+
+	return true;
 }

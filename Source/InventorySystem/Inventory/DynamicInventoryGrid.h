@@ -34,7 +34,14 @@ public:
 	void AddItem(const UBasicItemDataAsset* ItemDataAsset);
 
 	UFUNCTION(BlueprintCallable)
-	bool IsItemAvailableForSlot(const FIntPoint EmptySlotPoint, const FIntPoint ItemSize);
+	bool IsItemAvailableForSlot(const int Index, const FIntPoint& ItemSize) const;
+		
+	UFUNCTION(BlueprintCallable)
+    int GetSlotIndexByCoordinate(const int Column, const int Row) const;
+	
+	UFUNCTION(BlueprintCallable)
+	FIntPoint GetCoordinateByIndex(const int Index) const;
+
 
 protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
@@ -50,7 +57,8 @@ private:
 	virtual void NativePreConstruct() override;
 	
 	void InitInventoryWidget();
-	int GetFirstAvailableSlotIndex() const;
+	
+	int GetFirstAvailableSlotIndex(const FIntPoint& ItemSize) const;
 
 	TArray<UInventoryItemDisplay*> ItemContainer;
 	TArray<UBorder*> Slots;
