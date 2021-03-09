@@ -31,7 +31,7 @@ public:
 	float TileSize = 25.f;
 
 	UFUNCTION(BlueprintCallable)
-	void AddItem(const UBasicItemDataAsset* ItemDataAsset);
+	bool AddItem(const UBasicItemDataAsset* ItemDataAsset);
 
 	UFUNCTION(BlueprintCallable)
 	bool IsItemAvailableForSlot(const int Index, const FIntPoint& ItemSize) const;

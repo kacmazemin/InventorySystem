@@ -12,7 +12,7 @@
 #include "Components/Image.h"
 #include "InventorySystem/Item/BasicItemDataAsset.h"
 
-void UDynamicInventoryGrid::AddItem(const UBasicItemDataAsset* ItemDataAsset)
+bool UDynamicInventoryGrid::AddItem(const UBasicItemDataAsset* ItemDataAsset)
 {
 	const int Index = GetFirstAvailableSlotIndex(ItemDataAsset->GetItemSize());
 	
@@ -36,17 +36,20 @@ void UDynamicInventoryGrid::AddItem(const UBasicItemDataAsset* ItemDataAsset)
 			}
 		}
 	
-		if(Slots[Index])
-		{
-			UPanelSlot* PanelSlot = Cast<UPanelSlot>(Slots[Index]);
-	
-			if(UGridSlot* GridSlot = Cast<UGridSlot>(PanelSlot))
-			{
-				GridSlot->SetColumnSpan(ItemDataAsset->GetItemSize().Y);
-				GridSlot->SetRowSpan(ItemDataAsset->GetItemSize().X);
-			}
-		}
+		// if(Slots[Index])
+		// {
+		// 	UPanelSlot* PanelSlot = Cast<UPanelSlot>(Slots[Index]);
+		//
+		// 	if(UGridSlot* GridSlot = Cast<UGridSlot>(PanelSlot))
+		// 	{
+		// 		GridSlot->SetColumnSpan(ItemDataAsset->GetItemSize().Y);
+		// 		GridSlot->SetRowSpan(ItemDataAsset->GetItemSize().X);
+		// 	}
+		// }
+		return true;
 	}
+
+	return false;
 }
 
 void UDynamicInventoryGrid::NativePreConstruct()
@@ -163,7 +166,7 @@ bool UDynamicInventoryGrid::IsItemAvailableForSlot(const int Index, const FIntPo
 	{
 		for (int j = 0; j < ItemColumnSize; j++)
 		{
-			if(SlotMap[Slots[GetSlotIndexByCoordinate((Coordinate.X + i) , (Coordinate.Y + j))]])
+			if(SlotMap[Slots[GetSlotIndexByCoordinate((Coordinate.X + i) % ColumnCount , (Coordinate.Y + j) % RowCount)]])
 			{
 				return false;
 			}
