@@ -19,7 +19,20 @@ class INVENTORYSYSTEM_API UInventoryItemDisplay : public UUserWidget
 	GENERATED_BODY()
 
 public:
+
+	class UUserWidget* OwnerWidget = nullptr;
+	
 	void Init(const UBasicItemDataAsset* BasicItemData);
+
+	void SetInventoryIndex(const int Index)
+	{
+			SlotIndexOnInventory = Index;
+	};
+
+	int GetInventoryIndex() const
+	{
+		return SlotIndexOnInventory;
+	}
 
 	FIntPoint GetItemSize() const;
 	
@@ -28,6 +41,7 @@ protected:
 	const UBasicItemDataAsset* ItemData = nullptr;
 	
 private:
+	int SlotIndexOnInventory = -1;
 
 	UPROPERTY(meta = (BindWidget))
 	UImage* ItemIcon = nullptr;
@@ -42,5 +56,9 @@ private:
 	virtual void NativeOnMouseEnter( const FGeometry& InGeometry, const FPointerEvent& InMouseEvent ) override;
 	virtual void NativeOnMouseLeave( const FPointerEvent& InMouseEvent ) override;
 
+	virtual FReply NativeOnMouseButtonDown( const FGeometry& InGeometry, const FPointerEvent& InMouseEvent ) override;
+	virtual FReply NativeOnMouseButtonUp( const FGeometry& InGeometry, const FPointerEvent& InMouseEvent ) override;
+
+	virtual void NativeOnDragDetected( const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation ) override;
 
 };

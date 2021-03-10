@@ -2,9 +2,13 @@
 
 
 #include "InventoryItemDisplay.h"
+
+#include "DragDropWidget.h"
 #include "../Item/BasicItemDataAsset.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/Border.h"
 #include "Components/Image.h"
+#include "Kismet/GameplayStatics.h"
 
 void UInventoryItemDisplay::NativeConstruct()
 {
@@ -34,6 +38,51 @@ void UInventoryItemDisplay::NativeOnMouseLeave(const FPointerEvent& InMouseEvent
 	}
 }
 
+FReply UInventoryItemDisplay::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	FEventReply Reply;
+	Reply.NativeReply = Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
+
+	Reply = UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent,this, FKey{"LeftMouseButton"});
+
+	return Reply.NativeReply;
+}
+
+FReply UInventoryItemDisplay::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	return FReply::Handled();
+}
+
+void UInventoryItemDisplay::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent,
+                                                 UDragDropOperation*& OutOperation)
+{
+	Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
+
+
+	UDragDropWidget* WidgetDrag = Cast<UDragDropWidget>(UWidgetBlueprintLibrary::CreateDragDropOperation(UDragDropWidget::StaticClass()));
+
+	if (WidgetDrag == nullptr)
+	{
+		return;
+	}
+
+	APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	
+	//since I got problem to use exist widget, I created clone Widget for visualize 
+	UInventoryItemDisplay* DragVisual = CreateWidget<UInventoryItemDisplay>(PC, GetClass());
+	DragVisual->Init(ItemData);
+	
+	WidgetDrag->WidgetToDrag = this;
+	WidgetDrag->Payload = this;
+
+	WidgetDrag->DefaultDragVisual = DragVisual;
+
+	WidgetDrag->Pivot = EDragPivot::TopLeft;
+
+	OutOperation = WidgetDrag;
+
+}
+
 void UInventoryItemDisplay::Init(const UBasicItemDataAsset* BasicItemData)
 {
 	ItemData = BasicItemData;
@@ -42,7 +91,7 @@ void UInventoryItemDisplay::Init(const UBasicItemDataAsset* BasicItemData)
 	{
 		ItemIcon->SetBrushFromTexture(ItemData->GetThumbnail());
 		//todo replace tile size with global variable
-		ItemIcon->Brush.SetImageSize(ItemData->GetItemSize() * 49);
+		ItemIcon->Brush.SetImageSize(ItemData->GetItemSize() * 50);
 	}
 }
 
