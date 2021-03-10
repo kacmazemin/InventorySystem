@@ -10,6 +10,7 @@
 #include "Components/GridSlot.h"
 #include "InventoryItemDisplay.h"
 #include "Components/Image.h"
+#include "InventorySlot.h"
 #include "InventorySystem/Item/BasicItemDataAsset.h"
 
 bool UDynamicInventoryGrid::AddItem(const UBasicItemDataAsset* ItemDataAsset)
@@ -20,9 +21,12 @@ bool UDynamicInventoryGrid::AddItem(const UBasicItemDataAsset* ItemDataAsset)
 	{
 		UInventoryItemDisplay* InventoryItemDisplay = CreateWidget<UInventoryItemDisplay>(this, ItemDisplayClass);
 		InventoryItemDisplay->Init(ItemDataAsset);
+		InventoryItemDisplay->SetInventoryIndex(Index);
+		
 		const FIntPoint ItemStartPoint = GetCoordinateByIndex(Index);
 	
-		Slots[Index]->AddChild(InventoryItemDisplay);
+		InventoryGridPanel->AddChildToGrid(InventoryItemDisplay, ItemStartPoint.Y, ItemStartPoint.X);
+		
 		ItemContainer.Add(InventoryItemDisplay);
 
 		const int ItemColumnSize = ItemDataAsset->GetItemSize().Y;
@@ -88,13 +92,13 @@ void UDynamicInventoryGrid::InitInventoryWidget()
 					InventoryGridPanel->SetColumnFill(Column, 1.f);
 				}
 			}
-			UBorder* Border = WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
-			Border->SetPadding(FMargin{0, 0, 0, 0});
-			Border->RenderTransformPivot = FVector2D{0,0};
-			
-			Border->SetBrushColor({0.1, 0.1, 0.1, 0.4});
-				
-			UPanelSlot* PanelSlot = InventoryGridPanel->AddChild(Border);
+
+			UInventorySlot* InventorySlot = WidgetTree->ConstructWidget<UInventorySlot>(InventorySlotClass);
+			InventorySlot->SetCoordinate(Row, Column);
+			InventorySlot->SetPadding(FMargin{0, 0, 0, 0});
+			InventorySlot->RenderTransformPivot = FVector2D{0,0};
+							
+			UPanelSlot* PanelSlot = InventoryGridPanel->AddChild(InventorySlot);
 
 			if(UGridSlot* GridSlot = Cast<UGridSlot>(PanelSlot))
 			{
@@ -103,11 +107,11 @@ void UDynamicInventoryGrid::InitInventoryWidget()
 				GridSlot->SetColumnSpan(1);
 				GridSlot->SetRowSpan(1);
 
-				GridSlot->SetPadding(FMargin{1.f,1.f,1.f,1.f});
+				// GridSlot->SetPadding(FMargin{1.f,1.f,1.f,1.f});
 			}
 			
-			Slots.Add(Border);
-			SlotMap.Add(Border, false);
+			Slots.Add(InventorySlot);
+			SlotMap.Add(InventorySlot, false);
 		}
 	}
 }
@@ -132,9 +136,9 @@ FIntPoint UDynamicInventoryGrid::GetCoordinateByIndex(const int Index) const
 {
 	if(Index >= 0 && Index < Slots.Num())
 	{
-		if(UBorder* Border = Cast<UBorder>(Slots[Index]))
+		if(UInventorySlot* InvSlot = Cast<UInventorySlot>(Slots[Index]))
 		{
-			if(UGridSlot* GridSlot = Cast<UGridSlot>(Border->Slot))
+			if(UGridSlot* GridSlot = Cast<UGridSlot>(InvSlot->Slot))
 			{
 				return FIntPoint{GridSlot->Column, GridSlot->Row};
 			}	

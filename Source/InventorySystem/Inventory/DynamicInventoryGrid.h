@@ -11,6 +11,7 @@ class UBorder;
 class UBasicItemDataAsset;
 class UInventoryItemDisplay;
 class UGridSlot;
+class UInventorySlot;
 /**
  * 
  */
@@ -50,8 +51,11 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	UBorder* GridPanelBorder = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, Category = "ClassSetting")
+	UPROPERTY(EditDefaultsOnly, Category = "Class Settings")
 	TSubclassOf<UInventoryItemDisplay> ItemDisplayClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Class Settings")
+	TSubclassOf<UInventorySlot> InventorySlotClass;
 	
 private:
 	virtual void NativePreConstruct() override;
@@ -61,6 +65,6 @@ private:
 	int GetFirstAvailableSlotIndex(const FIntPoint& ItemSize) const;
 
 	TArray<UInventoryItemDisplay*> ItemContainer;
-	TArray<UBorder*> Slots;
-	TMap<UBorder*, bool> SlotMap;
+	TArray<UInventorySlot*> Slots;
+	TMap<UInventorySlot*, bool> SlotMap;
 };
