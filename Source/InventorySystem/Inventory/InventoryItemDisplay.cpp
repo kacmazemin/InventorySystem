@@ -4,6 +4,7 @@
 #include "InventoryItemDisplay.h"
 
 #include "DragDropWidget.h"
+#include "DynamicInventoryGrid.h"
 #include "../Item/BasicItemDataAsset.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/Border.h"
@@ -83,6 +84,10 @@ void UInventoryItemDisplay::NativeOnDragDetected(const FGeometry& InGeometry, co
 
 	this->SetVisibility(ESlateVisibility::Hidden);
 
+	if(Owner)
+	{
+		Owner->ClearSlots(Owner->GetCoordinateByIndex(SlotIndexOnInventory), ItemData->GetItemSize());
+	}
 }
 
 void UInventoryItemDisplay::NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent,
@@ -95,6 +100,11 @@ void UInventoryItemDisplay::NativeOnDragCancelled(const FDragDropEvent& InDragDr
 	if(SlotBorder)
 	{
 		SlotBorder->SetBrushColor(BorderInitialColor);
+	}
+
+	if(Owner)
+	{
+		Owner->FillSlots(Owner->GetCoordinateByIndex(SlotIndexOnInventory), ItemData->GetItemSize());
 	}
 }
 

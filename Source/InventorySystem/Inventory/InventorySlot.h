@@ -8,6 +8,7 @@
 
 class USlateBrushAsset;
 class UDynamicInventoryGrid;
+class UBorder;
 /**
  * 
  */
@@ -32,6 +33,13 @@ public:
 	UDynamicInventoryGrid* Owner = nullptr;
 
 	void SetIndex(const int Index) { SlotIndex = Index; };
+
+	void EnableFillorReFill(const bool IsFill);
+
+	UPROPERTY(meta = (BindWidget))
+	UBorder* Border = nullptr;
+
+	int GetIndex() const{ return SlotIndex; }
 	
 private:
 

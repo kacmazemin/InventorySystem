@@ -10,6 +10,8 @@
 class UBasicItemDataAsset;
 class UImage;
 class UBorder;
+class UDynamicInventoryGrid;
+
 /**
  * 
  */
@@ -35,6 +37,9 @@ public:
 	}
 
 	FIntPoint GetItemSize() const;
+
+	UPROPERTY()
+	UDynamicInventoryGrid* Owner = nullptr;
 	
 protected:
 	UPROPERTY(BlueprintReadOnly)

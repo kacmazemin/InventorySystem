@@ -10,12 +10,25 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/GridSlot.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/Border.h"
 #include "Rendering/DrawElements.h"
 
 void UInventorySlot::SetCoordinate(const int RowNo, const int ColumnNo)
 {
 	Row = RowNo;
 	Column = ColumnNo;
+}
+
+void UInventorySlot::EnableFillorReFill(const bool IsFill)
+{
+	if(IsFill)
+	{
+		Border->SetBrushColor(FLinearColor::Red);
+	}
+	else
+	{
+		Border->SetBrushColor(FLinearColor::Green);
+	}
 }
 
 bool UInventorySlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent,
@@ -30,7 +43,6 @@ bool UInventorySlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEv
 		return false;
 	}
 	
-	
 	const FString Message = FString::Printf(TEXT("ROW [%d] COLUMN [%d]"), Row, Column);
 	GEngine->AddOnScreenDebugMessage(-1,1.f, FColor::Black, Message);
 
@@ -44,9 +56,14 @@ bool UInventorySlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEv
 				GridSlot->SetColumn(Column);
 				GridSlot->SetRow(Row);
 			}
+			
+			if(Owner)
+			{
+				Owner->FillSlots(Owner->GetCoordinateByIndex(SlotIndex), InventoryItemDisplay->GetItemSize());
+				InventoryItemDisplay->SetInventoryIndex(SlotIndex);
+			}
 		}
 	}
-
 	
 	canDraw = false;
 
