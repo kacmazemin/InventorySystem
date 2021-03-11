@@ -124,6 +124,8 @@ int32 UInventorySlot::NativePaint(const FPaintArgs& Args, const FGeometry& Allot
 	{
 		FPaintContext Context(AllottedGeometry, MyCullingRect, OutDrawElements, LayerId, InWidgetStyle, bParentEnabled);
 		OnPaint( Context );
+
+		//todo handle if box is out of Inventory widget
 		
 		UWidgetBlueprintLibrary::DrawBox(Context, {0,0}, DrawSize, BrushAsset, Color);
 	
