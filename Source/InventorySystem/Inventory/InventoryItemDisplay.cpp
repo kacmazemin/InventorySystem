@@ -81,6 +81,21 @@ void UInventoryItemDisplay::NativeOnDragDetected(const FGeometry& InGeometry, co
 
 	OutOperation = WidgetDrag;
 
+	this->SetVisibility(ESlateVisibility::Hidden);
+
+}
+
+void UInventoryItemDisplay::NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent,
+	UDragDropOperation* InOperation)
+{
+	Super::NativeOnDragCancelled(InDragDropEvent, InOperation);
+
+	this->SetVisibility(ESlateVisibility::Visible);
+	
+	if(SlotBorder)
+	{
+		SlotBorder->SetBrushColor(BorderInitialColor);
+	}
 }
 
 void UInventoryItemDisplay::Init(const UBasicItemDataAsset* BasicItemData)
