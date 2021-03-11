@@ -3,6 +3,9 @@
 
 #include "BaseCharacter.h"
 
+#include "../InventorySystem/Inventory/InventoryWidget.h"
+#include "Kismet/GameplayStatics.h"
+
 // Sets default values
 ABaseCharacter::ABaseCharacter()
 {
@@ -15,6 +18,13 @@ ABaseCharacter::ABaseCharacter()
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if(APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+	{
+		InventoryWidget = CreateWidget<UInventoryWidget>(PC, InventoryWidgetClass);
+		InventoryWidget->AddToViewport();
+		InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
 	
 }
 
@@ -36,16 +46,34 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("Turn", this, &ABaseCharacter::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &ABaseCharacter::AddControllerPitchInput);
 
-
+	PlayerInputComponent->BindAction("ToggleInventory", IE_Pressed, this, &ABaseCharacter::ToggleInventory);
 }
 
-void ABaseCharacter::MoveRight(const float Value)
+void ABaseCharacter::MoveRight(float Value)
 {
 	AddMovementInput(GetActorRightVector(), Value);
+	
 }
 
-void ABaseCharacter::MoveForward(const float Value)
+void ABaseCharacter::MoveForward(float Value)
 {
 	AddMovementInput(GetActorForwardVector(), Value);
 }
 
+
+void ABaseCharacter::ToggleInventory()
+{
+	if(InventoryWidget)
+	{
+		if(bIsInventoryActive)
+		{
+			InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+			bIsInventoryActive = false;
+		}
+		else
+		{
+			InventoryWidget->SetVisibility(ESlateVisibility::Visible);
+			bIsInventoryActive = true;
+		}
+	}
+}

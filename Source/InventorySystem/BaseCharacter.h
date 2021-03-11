@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "BaseCharacter.generated.h"
 
+class UInventoryWidget;
+
 UCLASS()
 class INVENTORYSYSTEM_API ABaseCharacter : public ACharacter
 {
@@ -14,6 +16,9 @@ class INVENTORYSYSTEM_API ABaseCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ABaseCharacter();
+
+	UPROPERTY(EditDefaultsOnly, Category= "UI")
+	TSubclassOf<UInventoryWidget> InventoryWidgetClass;
 
 protected:
 	// Called when the game starts or when spawned
@@ -26,7 +31,16 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void MoveRight(const float Value);
-	void MoveForward(const float Value);
+	void ToggleInventory();
+	
+	void MoveRight(float Value);
+	void MoveForward(float Value);
+	
+private:
+	
+	bool bIsInventoryActive = false;
 
+	UPROPERTY()
+	UInventoryWidget* InventoryWidget = nullptr;
+	
 };
