@@ -22,6 +22,7 @@ bool UDynamicInventoryGrid::AddItem(const UBasicItemDataAsset* ItemDataAsset)
 		UInventoryItemDisplay* InventoryItemDisplay = CreateWidget<UInventoryItemDisplay>(this, ItemDisplayClass);
 		InventoryItemDisplay->Init(ItemDataAsset);
 		InventoryItemDisplay->SetInventoryIndex(Index);
+		InventoryItemDisplay->Owner = this;
 		
 		const FIntPoint ItemStartPoint = GetCoordinateByIndex(Index);
 	
@@ -29,27 +30,8 @@ bool UDynamicInventoryGrid::AddItem(const UBasicItemDataAsset* ItemDataAsset)
 		
 		ItemContainer.Add(InventoryItemDisplay);
 
-		const int ItemColumnSize = ItemDataAsset->GetItemSize().Y;
-		const int ItemRowSize = ItemDataAsset->GetItemSize().X;
-	
-		for (int i = 0; i < ItemRowSize ; i++)
-		{
-			for (int j = 0; j < ItemColumnSize; j++)
-			{
-				SlotMap.Add(Slots[GetSlotIndexByCoordinate((ItemStartPoint.X + i) % ColumnCount, (ItemStartPoint.Y + j) % RowCount)], true);					
-			}
-		}
-	
-		// if(Slots[Index])
-		// {
-		// 	UPanelSlot* PanelSlot = Cast<UPanelSlot>(Slots[Index]);
-		//
-		// 	if(UGridSlot* GridSlot = Cast<UGridSlot>(PanelSlot))
-		// 	{
-		// 		GridSlot->SetColumnSpan(ItemDataAsset->GetItemSize().Y);
-		// 		GridSlot->SetRowSpan(ItemDataAsset->GetItemSize().X);
-		// 	}
-		// }
+		FillSlots(ItemStartPoint, ItemDataAsset->GetItemSize());
+		
 		return true;
 	}
 
@@ -74,6 +56,7 @@ void UDynamicInventoryGrid::InitInventoryWidget()
 		CanvasPanelSlot->SetSize({TileSize * ColumnCount, TileSize * RowCount});
 	}
 
+	int count = 0;
 	for (int Row = 0; Row < RowCount; Row++)
 	{
 		if(InventoryGridPanel)
@@ -98,7 +81,8 @@ void UDynamicInventoryGrid::InitInventoryWidget()
 			InventorySlot->SetPadding(FMargin{0, 0, 0, 0});
 			InventorySlot->RenderTransformPivot = FVector2D{0,0};
 			InventorySlot->Owner = this;
-			InventorySlot->SetIndex(Slots.Num());
+			InventorySlot->SetIndex(count);
+			count++;
 							
 			UPanelSlot* PanelSlot = InventoryGridPanel->AddChild(InventorySlot);
 
@@ -147,6 +131,35 @@ FIntPoint UDynamicInventoryGrid::GetCoordinateByIndex(const int Index) const
 	}
 
 	return FIntPoint{-1,-1};
+}
+
+void UDynamicInventoryGrid::FillSlots(const FIntPoint& StartPoint, const FIntPoint& ItemSize)
+{
+	for (int i = 0; i < ItemSize.X ; i++)
+	{
+		for (int j = 0; j < ItemSize.Y; j++)
+		{
+			auto& SingleSlot = Slots[GetSlotIndexByCoordinate((StartPoint.X + i) % ColumnCount, (StartPoint.Y + j) % RowCount)];
+			SlotMap.Add(SingleSlot, true);
+			SingleSlot->EnableFillorReFill(true);
+
+			UE_LOG(LogTemp, Error, TEXT("INDEX ==> %d"), SingleSlot->GetIndex());
+
+		}
+	}
+}
+
+void UDynamicInventoryGrid::ClearSlots(const FIntPoint& StartPoint, const FIntPoint& ItemSize)
+{
+	for (int i = 0; i < ItemSize.X ; i++)
+	{
+		for (int j = 0; j < ItemSize.Y; j++)
+		{
+			auto& SingleSlot = Slots[GetSlotIndexByCoordinate((StartPoint.X + i) % ColumnCount, (StartPoint.Y + j) % RowCount)];
+			SlotMap.Add(SingleSlot, false);
+			SingleSlot->EnableFillorReFill(false);			
+		}
+	}
 }
 
 int UDynamicInventoryGrid::GetSlotIndexByCoordinate(const int Column, const int Row) const
