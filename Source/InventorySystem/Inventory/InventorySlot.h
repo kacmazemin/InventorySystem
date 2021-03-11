@@ -30,6 +30,8 @@ public:
 
 	UPROPERTY()
 	UDynamicInventoryGrid* Owner = nullptr;
+
+	void SetIndex(const int Index) { this->Index = Index; };
 	
 private:
 
