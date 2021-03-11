@@ -50,17 +50,25 @@ bool UInventorySlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEv
 	{
 		if(UInventoryItemDisplay* InventoryItemDisplay = Cast<UInventoryItemDisplay>(DropWidget->WidgetToDrag))
 		{
-			InventoryItemDisplay->SetVisibility(ESlateVisibility::Visible);
-			if(UGridSlot* GridSlot = Cast<UGridSlot>(InventoryItemDisplay->Slot))
-			{
-				GridSlot->SetColumn(Column);
-				GridSlot->SetRow(Row);
-			}
-			
 			if(Owner)
-			{
-				Owner->FillSlots(Owner->GetCoordinateByIndex(SlotIndex), InventoryItemDisplay->GetItemSize());
-				InventoryItemDisplay->SetInventoryIndex(SlotIndex);
+			{	
+				if(Owner->IsItemAvailableForSlot(SlotIndex, InventoryItemDisplay->GetItemSize()))
+				{
+					InventoryItemDisplay->SetVisibility(ESlateVisibility::Visible);
+					if(UGridSlot* GridSlot = Cast<UGridSlot>(InventoryItemDisplay->Slot))
+					{
+						GridSlot->SetColumn(Column);
+						GridSlot->SetRow(Row);
+					}
+				
+					Owner->FillSlots(Owner->GetCoordinateByIndex(SlotIndex), InventoryItemDisplay->GetItemSize());
+					InventoryItemDisplay->SetInventoryIndex(SlotIndex);
+				}
+				else
+				{
+					canDraw = false;
+					return false;
+				}
 			}
 		}
 	}
