@@ -31,14 +31,18 @@ public:
 	UPROPERTY()
 	UDynamicInventoryGrid* Owner = nullptr;
 
-	void SetIndex(const int Index) { this->Index = Index; };
+	void SetIndex(const int Index) { SlotIndex = Index; };
 	
 private:
 
 	bool canDraw = false;
-	int Index = -1;
+	int SlotIndex = -1;
 	int Row = -1;
 	int Column = -1;
+
+	FVector2D DrawSize = FVector2D::ZeroVector;
+
+	FLinearColor Color;
 	
 	virtual bool NativeOnDrop( const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation ) override;
 	virtual bool NativeOnDragOver( const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation ) override;

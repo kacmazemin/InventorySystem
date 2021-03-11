@@ -65,6 +65,19 @@ bool UInventorySlot::NativeOnDragOver(const FGeometry& InGeometry, const FDragDr
 		return false;
 	}
 
+	if(Owner)
+	{
+		if(UInventoryItemDisplay* InventoryItemDisplay = Cast<UInventoryItemDisplay>(DropWidget->WidgetToDrag))
+		{
+			const bool IsSlotValid = Owner->IsItemAvailableForSlot(SlotIndex, InventoryItemDisplay->GetItemSize());
+
+			DrawSize = {50 * InventoryItemDisplay->GetItemSize()};
+			
+			Color = IsSlotValid ?  ValidPlaceColor : InvalidPlaceColor;
+        }
+
+	}
+
 	if(UGridPanel* GridPanel = Cast<UGridPanel>(GetParent()))
 	{
 		const FString Message = FString::Printf(TEXT("ROW [%d] COLUMN [%d]"), Row, Column);
@@ -86,14 +99,8 @@ int32 UInventorySlot::NativePaint(const FPaintArgs& Args, const FGeometry& Allot
 	{
 		FPaintContext Context(AllottedGeometry, MyCullingRect, OutDrawElements, LayerId, InWidgetStyle, bParentEnabled);
 		OnPaint( Context );
-
-		if(Owner)
-		{
-			const bool IsSlotValid = Owner->IsItemAvailableForSlot();
-		}
 		
-		UWidgetBlueprintLibrary::DrawBox(Context, {0,0}, {100,100}, BrushAsset, ValidPlaceColor);
-		
+		UWidgetBlueprintLibrary::DrawBox(Context, {0,0}, DrawSize, BrushAsset, Color);
 	
 		return FMath::Max(LayerId, Context.MaxLayer);
 	}
