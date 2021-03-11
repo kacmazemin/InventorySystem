@@ -98,7 +98,7 @@ void UDynamicInventoryGrid::InitInventoryWidget()
 			InventorySlot->SetPadding(FMargin{0, 0, 0, 0});
 			InventorySlot->RenderTransformPivot = FVector2D{0,0};
 			InventorySlot->Owner = this;
-			
+			InventorySlot->SetIndex(Slots.Num());
 							
 			UPanelSlot* PanelSlot = InventoryGridPanel->AddChild(InventorySlot);
 
@@ -122,7 +122,7 @@ int UDynamicInventoryGrid::GetFirstAvailableSlotIndex(const FIntPoint& ItemSize)
 	
 	for (const auto& SingleSlot : SlotMap)
 	{
-		if(IsItemAvailableForSlot(i,ItemSize))
+		if(IsItemAvailableForSlot(i, ItemSize))
 		{
 			return i;
 		}
