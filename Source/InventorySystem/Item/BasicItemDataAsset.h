@@ -35,7 +35,7 @@ public:
 	};
 
 	UFUNCTION(BlueprintCallable)
-    UMeshComponent* GetMeshComponent() const
+    UStaticMesh* GetMeshComponent() const
 	{
 		return ItemMesh;	
 	};
@@ -58,7 +58,7 @@ private:
 	UTexture2D* ItemIcon;
 
 	UPROPERTY(EditAnywhere)
-	UMeshComponent* ItemMesh;
+	UStaticMesh* ItemMesh;
 
 	UPROPERTY(EditAnywhere, meta = (ClampMin = "1", ClampMax = "3", UIMin = "1", UIMax = "3"))
 	FIntPoint ItemSize = {1,1};
