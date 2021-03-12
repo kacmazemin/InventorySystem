@@ -7,8 +7,10 @@
 #include "InventoryComponent.generated.h"
 
 class UBasicItemDataAsset;
+class UInventoryWidget;
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = "Inventory", BlueprintType, Blueprintable)
+
 class INVENTORYSYSTEM_API UInventoryComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -17,12 +19,21 @@ public:
 	// Sets default values for this component's properties
 	UInventoryComponent();
 
+	UFUNCTION(BlueprintCallable)
+	void AddItem(const UBasicItemDataAsset* ItemData);
+
+	UPROPERTY(EditDefaultsOnly, Category= "UI")
+	TSubclassOf<UInventoryWidget> InventoryWidgetClass;
+
+	UPROPERTY()
+	UInventoryWidget* InventoryWidget = nullptr;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 private:
 
-	TArray<UBasicItemDataAsset*> ItemContainer;
+	TArray<const UBasicItemDataAsset*> ItemContainer;
 	
 };

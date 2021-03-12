@@ -3,6 +3,12 @@
 
 #include "InventoryComponent.h"
 
+
+
+#include "DynamicInventoryGrid.h"
+#include "InventoryWidget.h"
+#include "InventorySystem/BaseCharacter.h"
+
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()
 {
@@ -11,6 +17,19 @@ UInventoryComponent::UInventoryComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
+}
+
+void UInventoryComponent::AddItem(const UBasicItemDataAsset* ItemData)
+{
+	
+	if(InventoryWidget)
+	{
+		if(InventoryWidget->InventoryGridPanel->AddItem(ItemData))
+		{
+			//to keep inventoryData
+			ItemContainer.Add(ItemData);
+		}
+	}
 }
 
 
