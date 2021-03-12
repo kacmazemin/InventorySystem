@@ -7,6 +7,11 @@
 #include "GameFramework/Actor.h"
 #include "BaseItemActor.generated.h"
 
+class UBasicItemDataAsset;
+class UStaticMesh;
+class UBoxComponent;
+
+
 UCLASS()
 class INVENTORYSYSTEM_API ABaseItemActor : public AActor
 {
@@ -16,12 +21,23 @@ public:
 	// Sets default values for this actor's properties
 	ABaseItemActor();
 
+	UPROPERTY(EditDefaultsOnly)
+	UBasicItemDataAsset* ItemData = nullptr;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+private:
+	UPROPERTY()
+	UStaticMeshComponent* MeshComponent = nullptr;
+
+	UPROPERTY()
+	UBoxComponent* BoxCollision = nullptr;
+
+	UPROPERTY()
+	USceneComponent* SceneComponent = nullptr;
+
+	virtual void OnConstruction(const FTransform& Transform) override;
 
 };
