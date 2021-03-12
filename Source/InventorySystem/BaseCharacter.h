@@ -8,6 +8,8 @@
 
 class UInventoryWidget;
 class UInventoryComponent;
+class USpringArmComponent;
+class UCameraComponent;
 
 UCLASS()
 class INVENTORYSYSTEM_API ABaseCharacter : public ACharacter
@@ -21,7 +23,17 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UInventoryComponent* InventoryComponent = nullptr;
 
+	UPROPERTY(EditDefaultsOnly)
+	float TraceDistance = 2000;
+
+	UPROPERTY(EditDefaultsOnly)
+	float CameraDistance = 350.0f;
+
 protected:
+
+	UPROPERTY()
+	UCameraComponent* CameraComponent = nullptr;
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
