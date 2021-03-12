@@ -4,6 +4,7 @@
 #include "BaseCharacter.h"
 
 #include "../InventorySystem/Inventory/InventoryWidget.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Inventory/InventoryComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -73,7 +74,7 @@ void ABaseCharacter::EnableUIMode(const bool IsEnable)
 	{
 		if(IsEnable)
 		{
-			UWidgetBlueprintLibrary::SetInputMode_GameAndUIEx(PlayerController, this);
+			UWidgetBlueprintLibrary::SetInputMode_GameAndUIEx(PlayerController, InventoryComponent->InventoryWidget);
 			PlayerController->bShowMouseCursor = true;
 		}
 		else
@@ -92,15 +93,14 @@ void ABaseCharacter::ToggleInventory()
 		if(bIsInventoryActive)
 		{
 			InventoryComponent->InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
-			InventoryComponent->InventoryWidget->SetUIMode(false);
 			bIsInventoryActive = false;
 		}
 		else
 		{
 			InventoryComponent->InventoryWidget->SetVisibility(ESlateVisibility::Visible);
-			InventoryComponent->InventoryWidget->SetUIMode(true);
-
 			bIsInventoryActive = true;
 		}
+		EnableUIMode(bIsInventoryActive);
+
 	}
 }

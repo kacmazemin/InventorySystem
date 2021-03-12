@@ -6,6 +6,8 @@
 #include "Blueprint/UserWidget.h"
 #include "InventoryWidget.generated.h"
 
+class UDynamicInventoryGrid;
+
 /**
  * 
  */
@@ -13,9 +15,13 @@ UCLASS()
 class INVENTORYSYSTEM_API UInventoryWidget : public UUserWidget
 {
 	GENERATED_BODY()
-
+	
+public:
+	UPROPERTY(meta = (BindWidget))
+	UDynamicInventoryGrid* InventoryGridPanel = nullptr;
+	
 protected:
 	
 	virtual void NativeConstruct() override;
-	
+
 };

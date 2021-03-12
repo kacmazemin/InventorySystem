@@ -18,7 +18,7 @@ public:
 	// Sets default values for this character's properties
 	ABaseCharacter();
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UInventoryComponent* InventoryComponent = nullptr;
 
 protected:
