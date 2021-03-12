@@ -4,6 +4,7 @@
 #include "BaseCharacter.h"
 
 #include "../InventorySystem/Inventory/InventoryWidget.h"
+#include "Inventory/InventoryComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -11,6 +12,8 @@ ABaseCharacter::ABaseCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>("InventoryComponent");
 
 }
 
@@ -21,9 +24,12 @@ void ABaseCharacter::BeginPlay()
 
 	if(APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0))
 	{
-		InventoryWidget = CreateWidget<UInventoryWidget>(PC, InventoryWidgetClass);
-		InventoryWidget->AddToViewport();
-		InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+		if(InventoryComponent)
+		{
+			InventoryComponent->InventoryWidget = CreateWidget<UInventoryWidget>(PC, InventoryComponent->InventoryWidgetClass);
+			InventoryComponent->InventoryWidget->AddToViewport();
+			InventoryComponent->InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
 	}
 	
 }
@@ -60,19 +66,40 @@ void ABaseCharacter::MoveForward(float Value)
 	AddMovementInput(GetActorForwardVector(), Value);
 }
 
+void ABaseCharacter::EnableUIMode(const bool IsEnable)
+{
+
+	if (APlayerController* PlayerController = GEngine->GetFirstLocalPlayerController(GWorld))
+	{
+		if(IsEnable)
+		{
+			UWidgetBlueprintLibrary::SetInputMode_GameAndUIEx(PlayerController, this);
+			PlayerController->bShowMouseCursor = true;
+		}
+		else
+		{
+			UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController);
+			PlayerController->bShowMouseCursor = false;
+		}
+	}
+
+}
 
 void ABaseCharacter::ToggleInventory()
 {
-	if(InventoryWidget)
+	if(InventoryComponent->InventoryWidget)
 	{
 		if(bIsInventoryActive)
 		{
-			InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+			InventoryComponent->InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+			InventoryComponent->InventoryWidget->SetUIMode(false);
 			bIsInventoryActive = false;
 		}
 		else
 		{
-			InventoryWidget->SetVisibility(ESlateVisibility::Visible);
+			InventoryComponent->InventoryWidget->SetVisibility(ESlateVisibility::Visible);
+			InventoryComponent->InventoryWidget->SetUIMode(true);
+
 			bIsInventoryActive = true;
 		}
 	}

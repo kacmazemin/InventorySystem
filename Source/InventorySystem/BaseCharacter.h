@@ -7,6 +7,7 @@
 #include "BaseCharacter.generated.h"
 
 class UInventoryWidget;
+class UInventoryComponent;
 
 UCLASS()
 class INVENTORYSYSTEM_API ABaseCharacter : public ACharacter
@@ -17,8 +18,8 @@ public:
 	// Sets default values for this character's properties
 	ABaseCharacter();
 
-	UPROPERTY(EditDefaultsOnly, Category= "UI")
-	TSubclassOf<UInventoryWidget> InventoryWidgetClass;
+	UPROPERTY(EditDefaultsOnly)
+	UInventoryComponent* InventoryComponent = nullptr;
 
 protected:
 	// Called when the game starts or when spawned
@@ -39,8 +40,6 @@ public:
 private:
 	
 	bool bIsInventoryActive = false;
-
-	UPROPERTY()
-	UInventoryWidget* InventoryWidget = nullptr;
+	void EnableUIMode(const bool IsEnable);
 	
 };
