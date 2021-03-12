@@ -20,7 +20,7 @@ public:
 	UInventoryComponent();
 
 	UFUNCTION(BlueprintCallable)
-	void AddItem(const UBasicItemDataAsset* ItemData);
+	void PickUpItem(const UBasicItemDataAsset* ItemData);
 
 	UPROPERTY(EditDefaultsOnly, Category= "UI")
 	TSubclassOf<UInventoryWidget> InventoryWidgetClass;

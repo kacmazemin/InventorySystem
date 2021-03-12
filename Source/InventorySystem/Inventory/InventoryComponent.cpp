@@ -19,7 +19,7 @@ UInventoryComponent::UInventoryComponent()
 	// ...
 }
 
-void UInventoryComponent::AddItem(const UBasicItemDataAsset* ItemData)
+void UInventoryComponent::PickUpItem(const UBasicItemDataAsset* ItemData)
 {
 	
 	if(InventoryWidget)
