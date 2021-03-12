@@ -3,6 +3,8 @@
 
 #include "BaseCharacter.h"
 
+
+#include "DrawDebugHelpers.h"
 #include "../InventorySystem/Inventory/InventoryWidget.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Inventory/InventoryComponent.h"
@@ -21,8 +23,6 @@ ABaseCharacter::ABaseCharacter()
 	CameraComponent->SetupAttachment(RootComponent);
 	CameraComponent->bUsePawnControlRotation = true;
 	CameraComponent->SetRelativeLocation({0,0, 80});
-
-	TraceDistance = 2000.f;
 	
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>("InventoryComponent");
 
@@ -50,6 +50,7 @@ void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	LineTrace();
 }
 
 // Called to bind functionality to input
@@ -94,6 +95,34 @@ void ABaseCharacter::EnableUIMode(const bool IsEnable)
 		}
 	}
 
+}
+
+void ABaseCharacter::LineTrace()
+{
+	FVector Loc;
+	FRotator Rot;
+
+	GetController()->GetPlayerViewPoint(Loc, Rot);
+
+	const FVector Start = Loc;
+	const FVector End = Start + (Rot.Vector() * TraceDistance);
+
+	const FCollisionQueryParams TraceParams;
+
+	const bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, TraceParams);
+
+
+	if(bHit && Hit.GetActor())
+	{
+		DrawDebugPoint(GetWorld(), Hit.ImpactPoint, 2.f,FColor::Yellow, false, 2.f);
+		// DrawDebugBox(GetWorld(), Hit.ImpactPoint, FVector(5, 5,5), FColor::Green, false, 2.f);
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, Hit.GetActor()->GetName());
+	}
+	else
+	{
+		GEngine->ClearOnScreenDebugMessages();
+	}
+	
 }
 
 void ABaseCharacter::ToggleInventory()

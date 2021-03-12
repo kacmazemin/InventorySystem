@@ -24,7 +24,7 @@ public:
 	UInventoryComponent* InventoryComponent = nullptr;
 
 	UPROPERTY(EditDefaultsOnly)
-	float TraceDistance = 2000;
+	float TraceDistance = 2000.f;
 
 	UPROPERTY(EditDefaultsOnly)
 	float CameraDistance = 350.0f;
@@ -50,8 +50,10 @@ public:
 	void MoveForward(float Value);
 	
 private:
+
+	FHitResult Hit;
 	
 	bool bIsInventoryActive = false;
 	void EnableUIMode(const bool IsEnable);
-	
+	void LineTrace();	
 };
