@@ -43,7 +43,7 @@ public:
 	
 private:
 
-	bool canDraw = false;
+	bool bCanDraw = false;
 	int SlotIndex = -1;
 	int Row = -1;
 	int Column = -1;
@@ -62,6 +62,4 @@ private:
 	virtual void NativeOnDragLeave( const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation ) override;
 	virtual void NativeOnDragCancelled( const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation ) override;
 
-
-	
 };

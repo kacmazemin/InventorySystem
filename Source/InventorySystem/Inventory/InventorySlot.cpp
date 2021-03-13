@@ -66,14 +66,14 @@ bool UInventorySlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEv
 				}
 				else
 				{
-					canDraw = false;
+					bCanDraw = false;
 					return false;
 				}
 			}
 		}
 	}
 	
-	canDraw = false;
+	bCanDraw = false;
 
 	return true;
 }
@@ -108,7 +108,7 @@ bool UInventorySlot::NativeOnDragOver(const FGeometry& InGeometry, const FDragDr
 		const FString Message = FString::Printf(TEXT("ROW [%d] COLUMN [%d]"), Row, Column);
 		GEngine->AddOnScreenDebugMessage(-1,1.f, FColor::Black, Message);
 
-		canDraw = true;
+		bCanDraw = true;
 	}
 
 	return true;
@@ -120,7 +120,7 @@ int32 UInventorySlot::NativePaint(const FPaintArgs& Args, const FGeometry& Allot
 {
 	Super::NativePaint(Args, AllottedGeometry, MyCullingRect, OutDrawElements, LayerId, InWidgetStyle, bParentEnabled);
 	
-	if ( canDraw )
+	if ( bCanDraw )
 	{
 		FPaintContext Context(AllottedGeometry, MyCullingRect, OutDrawElements, LayerId, InWidgetStyle, bParentEnabled);
 		OnPaint( Context );
@@ -139,12 +139,12 @@ void UInventorySlot::NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, UD
 {
 	Super::NativeOnDragLeave(InDragDropEvent, InOperation);
 
-	canDraw = false;
+	bCanDraw = false;
 }
 
 void UInventorySlot::NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
 	Super::NativeOnDragCancelled(InDragDropEvent, InOperation);
 
-	canDraw = false;
+	bCanDraw = false;
 }
