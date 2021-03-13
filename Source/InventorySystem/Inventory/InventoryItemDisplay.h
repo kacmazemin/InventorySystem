@@ -11,6 +11,7 @@ class UBasicItemDataAsset;
 class UImage;
 class UBorder;
 class UDynamicInventoryGrid;
+class UTextBlock;
 
 /**
  * 
@@ -21,8 +22,6 @@ class INVENTORYSYSTEM_API UInventoryItemDisplay : public UUserWidget
 	GENERATED_BODY()
 
 public:
-
-	class UUserWidget* OwnerWidget = nullptr;
 	
 	void Init(const UBasicItemDataAsset* BasicItemData);
 
@@ -40,8 +39,9 @@ public:
 
 	UPROPERTY()
 	UDynamicInventoryGrid* Owner = nullptr;
+
+	void IncreaseCount(const int Value);
 	
-protected:
 	UPROPERTY(BlueprintReadOnly)
 	const UBasicItemDataAsset* ItemData = nullptr;
 	
@@ -53,6 +53,9 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UBorder* SlotBorder = nullptr;
+
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* StackSizeTextBlock = nullptr;
 
 	FLinearColor BorderInitialColor;
 	

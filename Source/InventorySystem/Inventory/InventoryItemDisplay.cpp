@@ -9,6 +9,7 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/Border.h"
 #include "Components/Image.h"
+#include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 
 void UInventoryItemDisplay::NativeConstruct()
@@ -117,6 +118,8 @@ void UInventoryItemDisplay::Init(const UBasicItemDataAsset* BasicItemData)
 		ItemIcon->SetBrushFromTexture(ItemData->GetThumbnail());
 		//todo replace tile size with global variable
 		ItemIcon->Brush.SetImageSize(ItemData->GetItemSize() * 50);
+		
+		StackSizeTextBlock->SetText(FText::FromString(FString::Printf( TEXT( "x%d" ), ItemData->GetStackSize())));
 	}
 }
 
@@ -132,3 +135,7 @@ FIntPoint UInventoryItemDisplay::GetItemSize() const
 	}
 }
 
+void UInventoryItemDisplay::IncreaseCount(const int Value)
+{
+	StackSizeTextBlock->SetText(FText::FromString(FString::Printf( TEXT( "x%d" ), ItemData->GetStackSize())));
+}
