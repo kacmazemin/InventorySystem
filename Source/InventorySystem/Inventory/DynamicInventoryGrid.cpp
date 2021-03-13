@@ -16,6 +16,18 @@
 bool UDynamicInventoryGrid::AddItem(const UBasicItemDataAsset* ItemDataAsset)
 {
 	const int Index = GetFirstAvailableSlotIndex(ItemDataAsset->GetItemSize());
+
+	if(ItemDataAsset->IsStackable())
+	{
+		for	(const auto item : ItemContainer)
+		{
+			if(item->ItemData->GetId() == ItemDataAsset->GetId())
+			{
+				GEngine->AddOnScreenDebugMessage(-1,1.f,FColor::Emerald,"SameEEEEEE");
+			}
+		}
+
+	}
 	
 	if(Index != -1)
 	{
