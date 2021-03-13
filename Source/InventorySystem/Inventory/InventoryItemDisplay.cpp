@@ -138,6 +138,5 @@ FIntPoint UInventoryItemDisplay::GetItemSize() const
 void UInventoryItemDisplay::IncreaseCount(const int Value)
 {
 	
-	ItemData->SetCount(ItemData->GetCount() + Value);
-	StackSizeTextBlock->SetText(FText::FromString(FString::Printf( TEXT( "x%d" ), ItemData->GetCount())));
+	StackSizeTextBlock->SetText(FText::FromString(FString::Printf( TEXT( "x%d" ), Value)));
 }
