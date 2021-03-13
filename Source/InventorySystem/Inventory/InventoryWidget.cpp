@@ -3,11 +3,20 @@
 
 #include "InventoryWidget.h"
 
-#include "Blueprint/WidgetBlueprintLibrary.h"
+
+#include "DynamicInventoryGrid.h"
+#include "Components/Button.h"
 
 void UInventoryWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
 	bIsFocusable = true;
+	
+	SortButton->OnClicked.AddDynamic(this, &UInventoryWidget::UInventoryWidget::OnClickSortButton);
+}
+
+void UInventoryWidget::OnClickSortButton()
+{
+	InventoryGridPanel->SortItems();
 }

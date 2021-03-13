@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "InventorySystem/Item/BasicItemDataAsset.h"
+
 
 #include "InventoryItemDisplay.generated.h"
 
@@ -23,11 +25,19 @@ class INVENTORYSYSTEM_API UInventoryItemDisplay : public UUserWidget
 
 public:
 	
+	UPROPERTY()
+	UDynamicInventoryGrid* Owner = nullptr;
+	
+	UPROPERTY(BlueprintReadOnly)
+	UBasicItemDataAsset* ItemData = nullptr;
+
 	void Init(UBasicItemDataAsset* BasicItemData);
+
+	void IncreaseCount(const int Value = 1);
 
 	void SetInventoryIndex(const int Index)
 	{
-			SlotIndexOnInventory = Index;
+		SlotIndexOnInventory = Index;
 	};
 
 	int GetInventoryIndex() const
@@ -37,13 +47,10 @@ public:
 
 	FIntPoint GetItemSize() const;
 
-	UPROPERTY()
-	UDynamicInventoryGrid* Owner = nullptr;
-
-	void IncreaseCount(const int Value = 1);
-	
-	UPROPERTY(BlueprintReadOnly)
-	UBasicItemDataAsset* ItemData = nullptr;
+	int GetTotalSlotForItem() const
+	{
+		return ItemData->GetItemSize().X * ItemData->GetItemSize().Y;
+	}
 	
 private:
 	int SlotIndexOnInventory = -1;

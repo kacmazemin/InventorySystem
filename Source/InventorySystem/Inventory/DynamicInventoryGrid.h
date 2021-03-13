@@ -48,6 +48,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FIntPoint GetCoordinateByIndex(const int Index) const;
 
+	void SortItems();
+
 	void FillSlots(const FIntPoint& StartPoint, const FIntPoint& ItemSize);
 	void ClearSlots(const FIntPoint& StartPoint, const FIntPoint& ItemSize);
 	

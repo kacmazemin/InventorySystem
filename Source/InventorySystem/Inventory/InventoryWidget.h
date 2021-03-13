@@ -7,6 +7,7 @@
 #include "InventoryWidget.generated.h"
 
 class UDynamicInventoryGrid;
+class UButton;
 
 /**
  * 
@@ -19,7 +20,13 @@ class INVENTORYSYSTEM_API UInventoryWidget : public UUserWidget
 public:
 	UPROPERTY(meta = (BindWidget))
 	UDynamicInventoryGrid* InventoryGridPanel = nullptr;
-	
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* SortButton = nullptr;
+
+	UFUNCTION()
+	void OnClickSortButton();	
+
 protected:
 	
 	virtual void NativeConstruct() override;

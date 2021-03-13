@@ -163,6 +163,29 @@ FIntPoint UDynamicInventoryGrid::GetCoordinateByIndex(const int Index) const
 	return FIntPoint{-1,-1};
 }
 
+void UDynamicInventoryGrid::SortItems()
+{
+	ClearSlots({0,0}, {RowCount, ColumnCount});
+	
+	ItemDisplayContainer.Sort([=](const auto& Left, const auto& Right)
+	{
+		return Left.GetTotalSlotForItem() > Right.GetTotalSlotForItem();
+	});
+	
+	for (const auto& Item : ItemDisplayContainer)
+	{
+		const int Index = GetFirstAvailableSlotIndex(Item->ItemData->GetItemSize());
+		const FIntPoint ItemStartPoint = GetCoordinateByIndex(Index);
+
+		Item->SetInventoryIndex(Index);
+		
+		InventoryGridPanel->AddChildToGrid(Item, ItemStartPoint.Y, ItemStartPoint.X);
+
+		FillSlots(ItemStartPoint, Item->GetItemSize());
+	}
+	
+}
+
 void UDynamicInventoryGrid::FillSlots(const FIntPoint& StartPoint, const FIntPoint& ItemSize)
 {
 	for (int i = 0; i < ItemSize.X ; i++)
