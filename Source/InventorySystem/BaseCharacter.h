@@ -10,6 +10,7 @@ class UInventoryWidget;
 class UInventoryComponent;
 class USpringArmComponent;
 class UCameraComponent;
+class ABaseItemActor;
 
 UCLASS()
 class INVENTORYSYSTEM_API ABaseCharacter : public ACharacter
@@ -50,10 +51,17 @@ public:
 	void MoveForward(float Value);
 	
 private:
-
+	
 	FHitResult Hit;
 	
 	bool bIsInventoryActive = false;
+	bool bIsPressPickUp = false;
+	
 	void EnableUIMode(const bool IsEnable);
-	void LineTrace();	
+	void LineTrace();
+
+	void PressPickUp();
+
+	void ReleasePickUp();
+	
 };

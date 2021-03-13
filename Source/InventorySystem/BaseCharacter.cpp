@@ -11,7 +11,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-#include "GameFramework/MovementComponent.h"
+#include "Item/BaseItemActor.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -65,6 +65,8 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("LookUp", this, &ABaseCharacter::AddControllerPitchInput);
 
 	PlayerInputComponent->BindAction("ToggleInventory", IE_Pressed, this, &ABaseCharacter::ToggleInventory);
+	PlayerInputComponent->BindAction("PickUp", IE_Pressed, this, &ABaseCharacter::PressPickUp);
+	PlayerInputComponent->BindAction("PickUp", IE_Released, this, &ABaseCharacter::ReleasePickUp);
 }
 
 void ABaseCharacter::MoveRight(float Value)
@@ -94,7 +96,6 @@ void ABaseCharacter::EnableUIMode(const bool IsEnable)
 			PlayerController->bShowMouseCursor = false;
 		}
 	}
-
 }
 
 void ABaseCharacter::LineTrace()
@@ -114,15 +115,36 @@ void ABaseCharacter::LineTrace()
 
 	if(bHit && Hit.GetActor())
 	{
-		DrawDebugPoint(GetWorld(), Hit.ImpactPoint, 2.f,FColor::Yellow, false, 2.f);
-		// DrawDebugBox(GetWorld(), Hit.ImpactPoint, FVector(5, 5,5), FColor::Green, false, 2.f);
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, Hit.GetActor()->GetName());
+		if(ABaseItemActor* ItemActor = Cast<ABaseItemActor>(Hit.GetActor()))
+		{
+			DrawDebugPoint(GetWorld(), Hit.ImpactPoint, 2.f,FColor::Yellow, false, 2.f);
+			// DrawDebugBox(GetWorld(), Hit.ImpactPoint, FVector(5, 5,5), FColor::Green, false, 2.f);
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, Hit.GetActor()->GetName());
+
+			if(bIsPressPickUp)
+			{
+				if(InventoryComponent->PickUpItem(ItemActor->ItemData))
+				{
+					ItemActor->Destroy();
+				}
+			}
+		}
 	}
 	else
 	{
 		GEngine->ClearOnScreenDebugMessages();
 	}
 	
+}
+
+void ABaseCharacter::PressPickUp()
+{
+	bIsPressPickUp = true;
+}
+
+void ABaseCharacter::ReleasePickUp()
+{
+	bIsPressPickUp = false;
 }
 
 void ABaseCharacter::ToggleInventory()
