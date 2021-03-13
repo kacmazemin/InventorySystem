@@ -8,6 +8,7 @@
 
 class UBasicItemDataAsset;
 class UInventoryWidget;
+class UInventoryItemDisplay;
 
 UCLASS(ClassGroup = "Inventory", BlueprintType, Blueprintable)
 
@@ -22,18 +23,23 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool PickUpItem(UBasicItemDataAsset* ItemData) ;
 
+	UFUNCTION(BlueprintCallable)
+	bool RemoveItem(UBasicItemDataAsset* ItemData) ;
+
 	UPROPERTY(EditDefaultsOnly, Category= "UI")
 	TSubclassOf<UInventoryWidget> InventoryWidgetClass;
 
 	UPROPERTY()
 	UInventoryWidget* InventoryWidget = nullptr;
 
+	UPROPERTY()
+	TArray<const UBasicItemDataAsset*> ItemContainer;
+	
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 private:
 
-	TArray<const UBasicItemDataAsset*> ItemContainer;
 	
 };

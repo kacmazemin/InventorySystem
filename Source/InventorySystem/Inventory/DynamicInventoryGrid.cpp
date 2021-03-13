@@ -19,11 +19,11 @@ bool UDynamicInventoryGrid::AddItem(UBasicItemDataAsset* ItemDataAsset)
 
 	if(ItemDataAsset->IsStackable())
 	{
-		for	(const auto Item : ItemContainer)
+		for(const auto ItemRef : ItemDisplayContainer)
 		{
-			if(Item->ItemData->GetId() == ItemDataAsset->GetId())
+			if(ItemRef->ItemData->GetId() == ItemDataAsset->GetId())
 			{
-				Item->IncreaseCount(ItemDataAsset->GetStackSize());
+				ItemRef->IncreaseCount();
 				return true;
 			}
 		}
@@ -40,7 +40,7 @@ bool UDynamicInventoryGrid::AddItem(UBasicItemDataAsset* ItemDataAsset)
 	
 		InventoryGridPanel->AddChildToGrid(InventoryItemDisplay, ItemStartPoint.Y, ItemStartPoint.X);
 		
-		ItemContainer.Add(InventoryItemDisplay);
+		ItemDisplayContainer.Add(InventoryItemDisplay);
 
 		FillSlots(ItemStartPoint, ItemDataAsset->GetItemSize());
 		
@@ -154,9 +154,6 @@ void UDynamicInventoryGrid::FillSlots(const FIntPoint& StartPoint, const FIntPoi
 			auto& SingleSlot = Slots[GetSlotIndexByCoordinate((StartPoint.X + i) % ColumnCount, (StartPoint.Y + j) % RowCount)];
 			SlotMap.Add(SingleSlot, true);
 			// SingleSlot->EnableFillorReFill(true);
-
-			UE_LOG(LogTemp, Error, TEXT("INDEX ==> %d"), SingleSlot->GetIndex());
-
 		}
 	}
 }
@@ -172,6 +169,11 @@ void UDynamicInventoryGrid::ClearSlots(const FIntPoint& StartPoint, const FIntPo
 			// SingleSlot->EnableFillorReFill(false);			
 		}
 	}
+}
+
+void UDynamicInventoryGrid::SetInventoryComponent(UInventoryComponent* InvComp)
+{
+	InventoryComponent = InvComp;
 }
 
 int UDynamicInventoryGrid::GetSlotIndexByCoordinate(const int Column, const int Row) const

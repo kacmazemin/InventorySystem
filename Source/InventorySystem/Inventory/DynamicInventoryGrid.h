@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "InventoryComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "DynamicInventoryGrid.generated.h"
 
@@ -46,7 +48,8 @@ public:
 	void FillSlots(const FIntPoint& StartPoint, const FIntPoint& ItemSize);
 	void ClearSlots(const FIntPoint& StartPoint, const FIntPoint& ItemSize);
 	
-
+	void SetInventoryComponent(UInventoryComponent* InvComp);
+	
 protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	UGridPanel* InventoryGridPanel = nullptr;
@@ -67,7 +70,10 @@ private:
 	
 	int GetFirstAvailableSlotIndex(const FIntPoint& ItemSize) const;
 
-	TArray<UInventoryItemDisplay*> ItemContainer;
+	UPROPERTY()
+	UInventoryComponent* InventoryComponent = nullptr;
+	
+	TArray<UInventoryItemDisplay*> ItemDisplayContainer;
 	TArray<UInventorySlot*> Slots;
 	TMap<UInventorySlot*, bool> SlotMap;
 };

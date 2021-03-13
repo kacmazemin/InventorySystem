@@ -48,6 +48,8 @@ public:
 private:
 	int SlotIndexOnInventory = -1;
 
+	int ItemCount = 1;
+
 	UPROPERTY(meta = (BindWidget))
 	UImage* ItemIcon = nullptr;
 

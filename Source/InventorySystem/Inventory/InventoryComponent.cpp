@@ -24,11 +24,14 @@ bool UInventoryComponent::PickUpItem(UBasicItemDataAsset* ItemData)
 	{
 		if(InventoryWidget->InventoryGridPanel->AddItem(ItemData))
 		{
-			//to keep inventoryData
-			ItemContainer.Add(ItemData);
 			return true;
 		}
 	}
+	return false;
+}
+
+bool UInventoryComponent::RemoveItem(UBasicItemDataAsset* ItemData)
+{
 	return false;
 }
 

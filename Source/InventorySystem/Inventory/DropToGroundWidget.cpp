@@ -4,6 +4,7 @@
 #include "DropToGroundWidget.h"
 
 #include "DragDropWidget.h"
+#include "InventoryItemDisplay.h"
 
 bool UDropToGroundWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent,
                                        UDragDropOperation* InOperation)
