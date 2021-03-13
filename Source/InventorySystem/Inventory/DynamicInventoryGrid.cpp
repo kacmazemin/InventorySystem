@@ -141,7 +141,7 @@ void UDynamicInventoryGrid::FillSlots(const FIntPoint& StartPoint, const FIntPoi
 		{
 			auto& SingleSlot = Slots[GetSlotIndexByCoordinate((StartPoint.X + i) % ColumnCount, (StartPoint.Y + j) % RowCount)];
 			SlotMap.Add(SingleSlot, true);
-			SingleSlot->EnableFillorReFill(true);
+			// SingleSlot->EnableFillorReFill(true);
 
 			UE_LOG(LogTemp, Error, TEXT("INDEX ==> %d"), SingleSlot->GetIndex());
 
@@ -157,7 +157,7 @@ void UDynamicInventoryGrid::ClearSlots(const FIntPoint& StartPoint, const FIntPo
 		{
 			auto& SingleSlot = Slots[GetSlotIndexByCoordinate((StartPoint.X + i) % ColumnCount, (StartPoint.Y + j) % RowCount)];
 			SlotMap.Add(SingleSlot, false);
-			SingleSlot->EnableFillorReFill(false);			
+			// SingleSlot->EnableFillorReFill(false);			
 		}
 	}
 }
