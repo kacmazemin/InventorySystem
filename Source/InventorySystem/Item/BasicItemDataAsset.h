@@ -61,7 +61,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	int GetStackSize() const
 	{
-		return CanStackable; 
+		return StackSize; 
 	}
 
 private:
