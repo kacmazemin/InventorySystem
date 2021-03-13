@@ -19,17 +19,18 @@ UInventoryComponent::UInventoryComponent()
 	// ...
 }
 
-void UInventoryComponent::PickUpItem(const UBasicItemDataAsset* ItemData)
+bool UInventoryComponent::PickUpItem(const UBasicItemDataAsset* ItemData)
 {
-	
 	if(InventoryWidget)
 	{
 		if(InventoryWidget->InventoryGridPanel->AddItem(ItemData))
 		{
 			//to keep inventoryData
 			ItemContainer.Add(ItemData);
+			return true;
 		}
 	}
+	return false;
 }
 
 
