@@ -37,6 +37,9 @@ public:
 	bool AddItem(UBasicItemDataAsset* ItemDataAsset);
 
 	UFUNCTION(BlueprintCallable)
+	void RemoveItem(UBasicItemDataAsset* ItemDataAsset);
+
+	UFUNCTION(BlueprintCallable)
 	bool IsItemAvailableForSlot(const int Index, const FIntPoint& ItemSize) const;
 		
 	UFUNCTION(BlueprintCallable)

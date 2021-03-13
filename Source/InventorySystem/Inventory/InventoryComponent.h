@@ -24,7 +24,7 @@ public:
 	bool PickUpItem(UBasicItemDataAsset* ItemData) ;
 
 	UFUNCTION(BlueprintCallable)
-	bool RemoveItem(UBasicItemDataAsset* ItemData) ;
+	void RemoveItem(UBasicItemDataAsset* ItemData) ;
 
 	UPROPERTY(EditDefaultsOnly, Category= "UI")
 	TSubclassOf<UInventoryWidget> InventoryWidgetClass;

@@ -90,7 +90,7 @@ void ABaseCharacter::MoveForward(float Value)
 
 void ABaseCharacter::DropItem(UBasicItemDataAsset* DropItemData)
 {
-	const FVector Location = FVector(0, 0, 0);
+	const FVector Location = FVector{GetActorLocation()};
 	const FRotator Rotate = FRotator(0,0,0);
 	const FActorSpawnParameters SpawnInfo;
 
@@ -98,6 +98,8 @@ void ABaseCharacter::DropItem(UBasicItemDataAsset* DropItemData)
 	const auto DroppedItem = GetWorld()->SpawnActor<ABaseItemActor>(ABaseItemActor::StaticClass(), Location, Rotate, SpawnInfo);
 	DroppedItem->ItemData = DropItemData;
 	DroppedItem->InitItemActor();
+	
+	InventoryComponent->RemoveItem(DropItemData);
 	
 }
 

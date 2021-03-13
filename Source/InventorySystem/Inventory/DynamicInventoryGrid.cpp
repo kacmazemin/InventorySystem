@@ -50,6 +50,24 @@ bool UDynamicInventoryGrid::AddItem(UBasicItemDataAsset* ItemDataAsset)
 	return false;
 }
 
+void UDynamicInventoryGrid::RemoveItem(UBasicItemDataAsset* ItemDataAsset)
+{
+	UInventoryItemDisplay* DeleteItem = nullptr;
+	
+	for	(const auto ItemDisplay: ItemDisplayContainer)
+	{
+		if(ItemDataAsset == ItemDisplay->ItemData)
+		{
+			DeleteItem = ItemDisplay;
+		}
+	}
+
+	if(DeleteItem)
+	{
+		ItemDisplayContainer.Remove(DeleteItem);
+	}
+}
+
 void UDynamicInventoryGrid::NativePreConstruct()
 {
 	Super::NativeConstruct();

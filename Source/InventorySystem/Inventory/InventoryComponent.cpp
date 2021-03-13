@@ -30,11 +30,15 @@ bool UInventoryComponent::PickUpItem(UBasicItemDataAsset* ItemData)
 	return false;
 }
 
-bool UInventoryComponent::RemoveItem(UBasicItemDataAsset* ItemData)
+void UInventoryComponent::RemoveItem(UBasicItemDataAsset* ItemData)
 {
-	return false;
-}
+	ItemContainer.Remove(ItemData);
 
+	if(InventoryWidget)
+	{
+		InventoryWidget->InventoryGridPanel->RemoveItem(ItemData);
+	}
+}
 
 // Called when the game starts
 void UInventoryComponent::BeginPlay()
