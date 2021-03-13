@@ -46,7 +46,37 @@ public:
 		return ItemSize;	
 	};
 
+	UFUNCTION(BlueprintCallable)
+	bool IsStackable() const
+	{
+		return CanStackable;
+	};
+
+	UFUNCTION(BlueprintCallable)
+	int GetStackSize() const
+	{
+		return CanStackable ? StackSize : 1; 
+	}
+
+	UFUNCTION(BlueprintCallable)
+	void IncreaseStackSize(const int Value) 
+	{
+		if(IsStackable())
+		{
+			StackSize = StackSize + Value;
+		}
+	}
+
+	UFUNCTION(BlueprintCallable)
+	int GetId() const  
+	{
+		return Id;
+	}
+
 private:
+
+	UPROPERTY(VisibleAnywhere)
+	int Id = GetUniqueID();
 	
 	UPROPERTY(EditAnywhere)
 	FText ItemName;
@@ -62,4 +92,10 @@ private:
 
 	UPROPERTY(EditAnywhere, meta = (ClampMin = "1", ClampMax = "3", UIMin = "1", UIMax = "3"))
 	FIntPoint ItemSize = {1,1};
+
+	UPROPERTY(EditAnywhere)
+	bool CanStackable = false;
+
+	UPROPERTY(EditAnywhere)
+	int StackSize = 1;
 };
