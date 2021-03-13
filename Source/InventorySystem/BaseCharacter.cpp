@@ -11,6 +11,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Inventory/DynamicInventoryGrid.h"
 #include "Item/BaseItemActor.h"
 #include "Inventory/ItemNameDisplayer.h"
 #include "Item/BasicItemDataAsset.h"
@@ -46,6 +47,8 @@ void ABaseCharacter::BeginPlay()
 			InventoryComponent->InventoryWidget = CreateWidget<UInventoryWidget>(PC, InventoryComponent->InventoryWidgetClass);
 			InventoryComponent->InventoryWidget->AddToViewport();
 			InventoryComponent->InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+
+			InventoryComponent->InventoryWidget->InventoryGridPanel->SetInventoryComponent(InventoryComponent);
 		}
 	}
 }
