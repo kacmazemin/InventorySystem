@@ -36,18 +36,20 @@ void ABaseItemActor::OnConstruction(const FTransform& Transform)
 {
 	if(ItemData)
 	{
-		UStaticMesh& SM = *ItemData->GetMeshComponent();
+		if(ItemData->GetMeshComponent())
+		{
+			UStaticMesh& SM = *ItemData->GetMeshComponent();
 		
-		MeshComponent->SetStaticMesh(&SM);
-		MeshComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-		// MeshComponent->SetRelativeLocation(MeshComponent->GetRelativeLocation());
-		BoxCollision->SetBoxExtent(SM.GetBounds().BoxExtent);
+			MeshComponent->SetStaticMesh(&SM);
+			MeshComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+			// MeshComponent->SetRelativeLocation(MeshComponent->GetRelativeLocation());
+			BoxCollision->SetBoxExtent(SM.GetBounds().BoxExtent);
 
 		
-		BoxCollision->SetRelativeLocation(FVector{0,0,SM.GetBounds().BoxExtent.Z});
-		MeshComponent->SetRelativeLocation({BoxCollision->GetRelativeLocation().X, BoxCollision->GetRelativeLocation().Y,
-										 BoxCollision->GetRelativeLocation().Z -SM.GetBounds().BoxExtent.Z });
-
+			BoxCollision->SetRelativeLocation(FVector{0,0,SM.GetBounds().BoxExtent.Z});
+			MeshComponent->SetRelativeLocation({BoxCollision->GetRelativeLocation().X, BoxCollision->GetRelativeLocation().Y,
+                                             BoxCollision->GetRelativeLocation().Z -SM.GetBounds().BoxExtent.Z });
+		}
 	}
 
 }
