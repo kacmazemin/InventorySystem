@@ -13,6 +13,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class ABaseItemActor;
 class UItemNameDisplayer;
+class UBasicItemDataAsset;
 
 UCLASS()
 class INVENTORYSYSTEM_API ABaseCharacter : public ACharacter
@@ -57,6 +58,7 @@ public:
 	
 	void MoveRight(float Value);
 	void MoveForward(float Value);
+	void DropItem(UBasicItemDataAsset* DropItemData);
 	
 private:
 	
