@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+
 #include "BaseCharacter.generated.h"
 
 class UInventoryWidget;
@@ -11,6 +12,7 @@ class UInventoryComponent;
 class USpringArmComponent;
 class UCameraComponent;
 class ABaseItemActor;
+class UItemNameDisplayer;
 
 UCLASS()
 class INVENTORYSYSTEM_API ABaseCharacter : public ACharacter
@@ -23,6 +25,12 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UInventoryComponent* InventoryComponent = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category= "UI")
+	TSubclassOf<UItemNameDisplayer> ItemNameWidgetClass = nullptr;
+
+	UPROPERTY()
+	UItemNameDisplayer* ItemName = nullptr;
 
 	UPROPERTY(EditDefaultsOnly)
 	float TraceDistance = 2000.f;

@@ -12,6 +12,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Item/BaseItemActor.h"
+#include "Inventory/ItemNameDisplayer.h"
+#include "Item/BasicItemDataAsset.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -35,6 +37,10 @@ void ABaseCharacter::BeginPlay()
 
 	if(APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0))
 	{
+		ItemName = CreateWidget<UItemNameDisplayer>(PC, ItemNameWidgetClass);
+		ItemName->AddToViewport();
+		ItemName->SetVisibility(ESlateVisibility::Hidden);
+		
 		if(InventoryComponent)
 		{
 			InventoryComponent->InventoryWidget = CreateWidget<UInventoryWidget>(PC, InventoryComponent->InventoryWidgetClass);
@@ -42,7 +48,6 @@ void ABaseCharacter::BeginPlay()
 			InventoryComponent->InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
-	
 }
 
 // Called every frame
@@ -112,14 +117,13 @@ void ABaseCharacter::LineTrace()
 
 	const bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, TraceParams);
 
-
 	if(bHit && Hit.GetActor())
 	{
 		if(ABaseItemActor* ItemActor = Cast<ABaseItemActor>(Hit.GetActor()))
 		{
-			DrawDebugPoint(GetWorld(), Hit.ImpactPoint, 2.f,FColor::Yellow, false, 2.f);
-			// DrawDebugBox(GetWorld(), Hit.ImpactPoint, FVector(5, 5,5), FColor::Green, false, 2.f);
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, Hit.GetActor()->GetName());
+			// DrawDebugPoint(GetWorld(), Hit.ImpactPoint, 2.f,FColor::Yellow, false, 2.f);
+			
+			ItemName->SetTextName(ItemActor->ItemData->GetItemName());
 
 			if(bIsPressPickUp)
 			{
@@ -129,12 +133,11 @@ void ABaseCharacter::LineTrace()
 				}
 			}
 		}
+		else
+		{
+			ItemName->SetTextName(FText::FromString(""));
+		}
 	}
-	else
-	{
-		GEngine->ClearOnScreenDebugMessages();
-	}
-	
 }
 
 void ABaseCharacter::PressPickUp()
