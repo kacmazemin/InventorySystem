@@ -15,6 +15,12 @@ class INVENTORYSYSTEM_API UBasicItemDataAsset : public UDataAsset
 	GENERATED_BODY()
 
 public:
+	
+	UFUNCTION(BlueprintCallable)
+    int GetId() const  
+	{
+		return Id;
+	}
 
 	UFUNCTION(BlueprintCallable)
 	const FText& GetItemName() const
@@ -55,22 +61,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	int GetStackSize() const
 	{
-		return CanStackable ? StackSize : 1; 
-	}
-
-	UFUNCTION(BlueprintCallable)
-	void IncreaseStackSize(const int Value) 
-	{
-		if(IsStackable())
-		{
-			StackSize = StackSize + Value;
-		}
-	}
-
-	UFUNCTION(BlueprintCallable)
-	int GetId() const  
-	{
-		return Id;
+		return CanStackable; 
 	}
 
 private:

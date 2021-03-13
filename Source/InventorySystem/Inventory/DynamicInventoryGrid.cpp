@@ -13,20 +13,20 @@
 #include "InventorySlot.h"
 #include "InventorySystem/Item/BasicItemDataAsset.h"
 
-bool UDynamicInventoryGrid::AddItem(const UBasicItemDataAsset* ItemDataAsset)
+bool UDynamicInventoryGrid::AddItem(UBasicItemDataAsset* ItemDataAsset)
 {
 	const int Index = GetFirstAvailableSlotIndex(ItemDataAsset->GetItemSize());
 
 	if(ItemDataAsset->IsStackable())
 	{
-		for	(const auto item : ItemContainer)
+		for	(const auto Item : ItemContainer)
 		{
-			if(item->ItemData->GetId() == ItemDataAsset->GetId())
+			if(Item->ItemData->GetId() == ItemDataAsset->GetId())
 			{
-				GEngine->AddOnScreenDebugMessage(-1,1.f,FColor::Emerald,"SameEEEEEE");
+				Item->IncreaseCount(ItemDataAsset->GetStackSize());
+				return true;
 			}
 		}
-
 	}
 	
 	if(Index != -1)

@@ -7,7 +7,6 @@
 
 #include "DynamicInventoryGrid.h"
 #include "InventoryWidget.h"
-#include "InventorySystem/BaseCharacter.h"
 
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()
@@ -19,7 +18,7 @@ UInventoryComponent::UInventoryComponent()
 	// ...
 }
 
-bool UInventoryComponent::PickUpItem(const UBasicItemDataAsset* ItemData)
+bool UInventoryComponent::PickUpItem(UBasicItemDataAsset* ItemData)
 {
 	if(InventoryWidget)
 	{

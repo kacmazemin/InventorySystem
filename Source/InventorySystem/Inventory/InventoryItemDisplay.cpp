@@ -109,7 +109,7 @@ void UInventoryItemDisplay::NativeOnDragCancelled(const FDragDropEvent& InDragDr
 	}
 }
 
-void UInventoryItemDisplay::Init(const UBasicItemDataAsset* BasicItemData)
+void UInventoryItemDisplay::Init(UBasicItemDataAsset* BasicItemData)
 {
 	ItemData = BasicItemData;
 
@@ -137,5 +137,7 @@ FIntPoint UInventoryItemDisplay::GetItemSize() const
 
 void UInventoryItemDisplay::IncreaseCount(const int Value)
 {
-	StackSizeTextBlock->SetText(FText::FromString(FString::Printf( TEXT( "x%d" ), ItemData->GetStackSize())));
+	
+	ItemData->SetCount(ItemData->GetCount() + Value);
+	StackSizeTextBlock->SetText(FText::FromString(FString::Printf( TEXT( "x%d" ), ItemData->GetCount())));
 }

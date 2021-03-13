@@ -23,7 +23,7 @@ class INVENTORYSYSTEM_API UInventoryItemDisplay : public UUserWidget
 
 public:
 	
-	void Init(const UBasicItemDataAsset* BasicItemData);
+	void Init(UBasicItemDataAsset* BasicItemData);
 
 	void SetInventoryIndex(const int Index)
 	{
@@ -40,10 +40,10 @@ public:
 	UPROPERTY()
 	UDynamicInventoryGrid* Owner = nullptr;
 
-	void IncreaseCount(const int Value);
+	void IncreaseCount(const int Value = 1);
 	
 	UPROPERTY(BlueprintReadOnly)
-	const UBasicItemDataAsset* ItemData = nullptr;
+	UBasicItemDataAsset* ItemData = nullptr;
 	
 private:
 	int SlotIndexOnInventory = -1;
