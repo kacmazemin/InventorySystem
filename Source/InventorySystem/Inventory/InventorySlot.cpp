@@ -39,12 +39,12 @@ bool UInventorySlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEv
 	UDragDropWidget* DropWidget = Cast<UDragDropWidget>(InOperation);
 	if (DropWidget == nullptr)
 	{
-		GEngine->AddOnScreenDebugMessage(-1,1.f, FColor::Black, "FALSE");
+		// GEngine->AddOnScreenDebugMessage(-1,1.f, FColor::Black, "FALSE");
 		return false;
 	}
 	
-	const FString Message = FString::Printf(TEXT("ROW [%d] COLUMN [%d]"), Row, Column);
-	GEngine->AddOnScreenDebugMessage(-1,1.f, FColor::Black, Message);
+	// const FString Message = FString::Printf(TEXT("ROW [%d] COLUMN [%d]"), Row, Column);
+	// GEngine->AddOnScreenDebugMessage(-1,1.f, FColor::Black, Message);
 
 	if(UGridPanel* GridPanel = Cast<UGridPanel>(GetParent()))
 	{
@@ -105,8 +105,8 @@ bool UInventorySlot::NativeOnDragOver(const FGeometry& InGeometry, const FDragDr
 
 	if(UGridPanel* GridPanel = Cast<UGridPanel>(GetParent()))
 	{
-		const FString Message = FString::Printf(TEXT("ROW [%d] COLUMN [%d]"), Row, Column);
-		GEngine->AddOnScreenDebugMessage(-1,1.f, FColor::Black, Message);
+		// const FString Message = FString::Printf(TEXT("ROW [%d] COLUMN [%d]"), Row, Column);
+		// GEngine->AddOnScreenDebugMessage(-1,1.f, FColor::Black, Message);
 
 		bCanDraw = true;
 	}
