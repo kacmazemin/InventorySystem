@@ -25,14 +25,7 @@ ABaseItemActor::ABaseItemActor()
 	
 }
 
-// Called when the game starts or when spawned
-void ABaseItemActor::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
-void ABaseItemActor::OnConstruction(const FTransform& Transform)
+void ABaseItemActor::InitItemActor()
 {
 	if(ItemData)
 	{
@@ -51,5 +44,16 @@ void ABaseItemActor::OnConstruction(const FTransform& Transform)
                                              BoxCollision->GetRelativeLocation().Z -SM.GetBounds().BoxExtent.Z });
 		}
 	}
+}
 
+// Called when the game starts or when spawned
+void ABaseItemActor::BeginPlay()
+{
+	Super::BeginPlay();
+	
+}
+
+void ABaseItemActor::OnConstruction(const FTransform& Transform)
+{
+	InitItemActor();
 }
