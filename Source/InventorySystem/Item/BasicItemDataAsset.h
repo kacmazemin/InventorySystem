@@ -17,7 +17,7 @@ class INVENTORYSYSTEM_API UBasicItemDataAsset : public UDataAsset
 public:
 
 	UFUNCTION(BlueprintCallable)
-	const FString& GetItemName() const
+	const FText& GetItemName() const
 	{
 		return ItemName;
 	};
@@ -49,7 +49,7 @@ public:
 private:
 	
 	UPROPERTY(EditAnywhere)
-	FString ItemName;
+	FText ItemName;
 
 	UPROPERTY(EditAnywhere)
 	FString Description;
