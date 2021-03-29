@@ -111,7 +111,7 @@ void UInventoryItemDisplay::NativeOnDragCancelled(const FDragDropEvent& InDragDr
 
 void UInventoryItemDisplay::Init(UBasicItemDataAsset* BasicItemData)
 {
-	ItemData = BasicItemData;
+	ItemData = DuplicateObject<UBasicItemDataAsset>(BasicItemData,this);;
 
 	if(ItemData)
 	{
