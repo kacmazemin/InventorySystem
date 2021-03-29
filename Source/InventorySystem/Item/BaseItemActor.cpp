@@ -14,14 +14,15 @@ ABaseItemActor::ABaseItemActor()
 
 	SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent"));
 	RootComponent = SceneComponent;
+
+	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	MeshComponent->SetupAttachment(SceneComponent);
+	MeshComponent->SetRelativeLocation({0,0,0});
 	
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
-	BoxCollision->SetupAttachment(SceneComponent);
+	BoxCollision->SetupAttachment(MeshComponent);
 	BoxCollision->SetRelativeLocation({0,0,0});
 	
-	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	MeshComponent->SetupAttachment(BoxCollision);
-	MeshComponent->SetRelativeLocation({0,0,0});
 	
 }
 
@@ -50,7 +51,7 @@ void ABaseItemActor::InitItemActor()
 void ABaseItemActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	// InitItemActor();
 }
 
 void ABaseItemActor::OnConstruction(const FTransform& Transform)

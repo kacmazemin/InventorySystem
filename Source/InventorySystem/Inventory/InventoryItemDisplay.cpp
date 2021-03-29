@@ -120,6 +120,7 @@ void UInventoryItemDisplay::Init(UBasicItemDataAsset* BasicItemData)
 		ItemIcon->Brush.SetImageSize(ItemData->GetItemSize() * 50);
 		
 		StackSizeTextBlock->SetText(FText::FromString(FString::Printf( TEXT( "x%d" ), ItemData->GetStackSize())));
+		ItemCount = ItemData->GetStackSize();
 	}
 }
 

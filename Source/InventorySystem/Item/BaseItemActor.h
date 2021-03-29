@@ -32,7 +32,7 @@ protected:
 
 
 private:
-	UPROPERTY()
+	UPROPERTY(EditInstanceOnly)
 	UStaticMeshComponent* MeshComponent = nullptr;
 
 	UPROPERTY()
