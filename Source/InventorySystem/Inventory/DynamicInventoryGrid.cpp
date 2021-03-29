@@ -23,6 +23,7 @@ bool UDynamicInventoryGrid::AddItem(UBasicItemDataAsset* ItemDataAsset)
 		{
 			if(ItemRef->ItemData->GetId() == ItemDataAsset->GetId())
 			{
+				ItemRef->ItemData->AddStack(ItemDataAsset->GetStackSize());
 				ItemRef->IncreaseCount();
 				return true;
 			}
