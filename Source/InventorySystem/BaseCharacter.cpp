@@ -90,7 +90,9 @@ void ABaseCharacter::MoveForward(float Value)
 
 void ABaseCharacter::DropItem(UBasicItemDataAsset* DropItemData)
 {
-	const FVector Location = FVector{GetActorLocation()};
+	FVector Location = (GetActorForwardVector() * 200.f) + GetActorLocation();
+	Location.Z = 0;
+	
 	const FRotator Rotate = FRotator(0,0,0);
 	const FActorSpawnParameters SpawnInfo;
 
