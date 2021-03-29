@@ -64,6 +64,13 @@ public:
 		return StackSize; 
 	}
 
+	UFUNCTION(BlueprintCallable)
+	int AddStack(const int Size)
+	{
+		StackSize += Size;
+		return StackSize;
+	}
+
 private:
 
 	UPROPERTY(VisibleAnywhere)
